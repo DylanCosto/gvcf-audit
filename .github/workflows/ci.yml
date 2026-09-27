@@ -39,6 +39,20 @@ jobs:
       - name: Independent synthetic checks on the release build
         run: python3 tests/oracles/run.py target/release/gvcf-audit
 
+  multiqc:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - run: rustup toolchain install stable --profile minimal
+      - run: cargo +stable build --locked
+      - name: Install MultiQC for the integration check
+        run: |
+          python3 -m venv "$RUNNER_TEMP/multiqc"
+          "$RUNNER_TEMP/multiqc/bin/pip" install multiqc==1.35
+      - run: python3 tests/integrations/multiqc.py target/debug/gvcf-audit "$RUNNER_TEMP/multiqc/bin/multiqc"
+
   weekly-random:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-24.04
