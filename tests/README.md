@@ -96,3 +96,6 @@ one test to check that summaries are self-contained. `oracles/cohort.py` indepen
 computes per-base callability and overlapping target unions for 12 randomized samples,
 then checks both matrices and group statistics. It uses the same replayable seed mechanism
 as the other suites.
+
+The public-genome GIAB example has five additional small interval checks in
+`examples/giab/test_overlap.py`. CI runs them without downloading genomes.
