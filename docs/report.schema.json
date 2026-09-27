@@ -1,0 +1,481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "gvcf-audit report v1",
+  "description": "Completed audits; quality-check failure does not mean input processing failed. Additional fields may be added within v1.",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "status",
+    "requested_bases",
+    "callable_bases",
+    "callable_fraction",
+    "records_scanned",
+    "bases_by_state",
+    "checksums_computed",
+    "elapsed_seconds",
+    "warnings",
+    "adaptations",
+    "quality_checks",
+    "regions",
+    "contigs",
+    "inputs",
+    "header",
+    "options",
+    "policy",
+    "record_states_before_overlap_and_reference_mask",
+    "definition",
+    "scope",
+    "coordinates"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gvcf-audit-report-v1"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "const": "complete"
+    },
+    "requested_bases": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "callable_bases": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "callable_fraction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "records_scanned": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "bases_by_state": {
+      "type": "object",
+      "required": [
+        "callable_reference",
+        "callable_variant",
+        "complex_variant",
+        "filter_not_assessed",
+        "genotype_filtered",
+        "low_depth",
+        "low_gq",
+        "no_call",
+        "no_record",
+        "overlapping_records",
+        "partial_no_call",
+        "quality_missing",
+        "reference_ambiguous",
+        "reference_mismatch",
+        "site_filtered",
+        "unsupported_allele",
+        "unsupported_ploidy"
+      ],
+      "properties": {
+        "callable_reference": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "callable_variant": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "complex_variant": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "filter_not_assessed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "genotype_filtered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "low_depth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "low_gq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "no_call": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "no_record": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlapping_records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "partial_no_call": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quality_missing": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reference_ambiguous": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reference_mismatch": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "site_filtered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported_allele": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported_ploidy": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "checksums_computed": {
+      "const": false
+    },
+    "elapsed_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "adaptations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "quality_checks": {
+      "type": "object",
+      "required": [
+        "passed",
+        "requested",
+        "failures"
+      ],
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "requested": {
+          "type": "boolean"
+        },
+        "failures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contig",
+          "start",
+          "end",
+          "name",
+          "bases",
+          "callable_bases",
+          "callable_fraction",
+          "bases_by_state"
+        ],
+        "properties": {
+          "contig": {
+            "type": "string"
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "bases": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "callable_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "callable_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "bases_by_state": {
+            "type": "object",
+            "required": [
+              "callable_reference",
+              "callable_variant",
+              "complex_variant",
+              "filter_not_assessed",
+              "genotype_filtered",
+              "low_depth",
+              "low_gq",
+              "no_call",
+              "no_record",
+              "overlapping_records",
+              "partial_no_call",
+              "quality_missing",
+              "reference_ambiguous",
+              "reference_mismatch",
+              "site_filtered",
+              "unsupported_allele",
+              "unsupported_ploidy"
+            ],
+            "properties": {
+              "callable_reference": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "callable_variant": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "complex_variant": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "filter_not_assessed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "genotype_filtered": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "low_depth": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "low_gq": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "no_call": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "no_record": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "overlapping_records": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "partial_no_call": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "quality_missing": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reference_ambiguous": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reference_mismatch": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "site_filtered": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unsupported_allele": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unsupported_ploidy": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "contigs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contig",
+          "requested_bases",
+          "callable_bases",
+          "callable_fraction",
+          "bases_by_state"
+        ],
+        "properties": {
+          "contig": {
+            "type": "string"
+          },
+          "requested_bases": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "callable_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "callable_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "bases_by_state": {
+            "type": "object",
+            "required": [
+              "callable_reference",
+              "callable_variant",
+              "complex_variant",
+              "filter_not_assessed",
+              "genotype_filtered",
+              "low_depth",
+              "low_gq",
+              "no_call",
+              "no_record",
+              "overlapping_records",
+              "partial_no_call",
+              "quality_missing",
+              "reference_ambiguous",
+              "reference_mismatch",
+              "site_filtered",
+              "unsupported_allele",
+              "unsupported_ploidy"
+            ],
+            "properties": {
+              "callable_reference": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "callable_variant": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "complex_variant": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "filter_not_assessed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "genotype_filtered": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "low_depth": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "low_gq": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "no_call": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "no_record": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "overlapping_records": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "partial_no_call": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "quality_missing": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reference_ambiguous": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reference_mismatch": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "site_filtered": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unsupported_allele": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unsupported_ploidy": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "header": {
+      "type": "object"
+    },
+    "options": {
+      "type": "object"
+    },
+    "policy": {
+      "type": "object"
+    },
+    "record_states_before_overlap_and_reference_mask": {
+      "type": "object"
+    },
+    "definition": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "coordinates": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

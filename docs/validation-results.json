@@ -1,0 +1,129 @@
+{
+  "gatk-whole-genome": {
+    "case": "gatk-whole-genome",
+    "sample": "NA12878",
+    "caller": "gatk",
+    "records": 154179502,
+    "all_bed_intervals_checked": 23132985,
+    "all_requested_bases_checked": 3105715063,
+    "complete_partition_verified": true,
+    "all_json_contig_and_global_totals_match": true,
+    "independent_parser": "pysam / HTSlib",
+    "sampled_windows": 550,
+    "sampled_bases": 550000,
+    "all_sampled_states_match": true,
+    "sampled_states": {
+      "callable_reference": 421711,
+      "filter_not_assessed": 1385,
+      "reference_ambiguous": 32002,
+      "low_gq": 2530,
+      "overlapping_records": 70,
+      "low_depth": 22304,
+      "no_record": 69998
+    },
+    "seed": 91401,
+    "policy_options": {
+      "min_dp": 10.0,
+      "min_gq": 20.0,
+      "allow_block_dp": false,
+      "allow_unfiltered": false
+    },
+    "limits": "Every exported interval and count checked; genotype classification independently checked in sampled windows, not every genome base."
+  },
+  "dragen-whole-genome": {
+    "case": "dragen-whole-genome",
+    "sample": "HG00096",
+    "caller": "dragen",
+    "records": 177086704,
+    "all_bed_intervals_checked": 29663085,
+    "all_requested_bases_checked": 3215250450,
+    "complete_partition_verified": true,
+    "all_json_contig_and_global_totals_match": true,
+    "independent_parser": "pysam / HTSlib",
+    "sampled_windows": 976,
+    "sampled_bases": 975903,
+    "all_sampled_states_match": true,
+    "sampled_states": {
+      "callable_reference": 537719,
+      "callable_variant": 1159,
+      "complex_variant": 170,
+      "overlapping_records": 756,
+      "site_filtered": 9143,
+      "reference_ambiguous": 44089,
+      "low_gq": 1899,
+      "low_depth": 37542,
+      "no_call": 230455,
+      "no_record": 112918,
+      "quality_missing": 53
+    },
+    "seed": 91401,
+    "policy_options": {
+      "min_dp": 10.0,
+      "min_gq": 20.0,
+      "allow_block_dp": false,
+      "allow_unfiltered": false
+    },
+    "limits": "Every exported interval and count checked; genotype classification independently checked in sampled windows, not every genome base."
+  },
+  "gatk-reblocked-default": {
+    "case": "gatk-reblocked-default",
+    "sample": "NA12878",
+    "caller": "gatk",
+    "records": 42025432,
+    "all_bed_intervals_checked": 9880970,
+    "all_requested_bases_checked": 3217346917,
+    "complete_partition_verified": true,
+    "all_json_contig_and_global_totals_match": true,
+    "independent_parser": "pysam / HTSlib",
+    "sampled_windows": 550,
+    "sampled_bases": 550000,
+    "all_sampled_states_match": true,
+    "sampled_states": {
+      "quality_missing": 443831,
+      "filter_not_assessed": 1167,
+      "reference_ambiguous": 35001,
+      "overlapping_records": 2,
+      "no_record": 69999
+    },
+    "seed": 91401,
+    "policy_options": {
+      "min_dp": 10.0,
+      "min_gq": 20.0,
+      "allow_block_dp": false,
+      "allow_unfiltered": false
+    },
+    "limits": "Every exported interval and count checked; genotype classification independently checked in sampled windows, not every genome base."
+  },
+  "gatk-reblocked-dp": {
+    "case": "gatk-reblocked-dp",
+    "sample": "NA12878",
+    "caller": "gatk",
+    "records": 42025432,
+    "all_bed_intervals_checked": 19337964,
+    "all_requested_bases_checked": 3217346917,
+    "complete_partition_verified": true,
+    "all_json_contig_and_global_totals_match": true,
+    "independent_parser": "pysam / HTSlib",
+    "sampled_windows": 550,
+    "sampled_bases": 550000,
+    "all_sampled_states_match": true,
+    "sampled_states": {
+      "callable_reference": 417115,
+      "low_gq": 2061,
+      "complex_variant": 433,
+      "callable_variant": 661,
+      "low_depth": 24728,
+      "reference_ambiguous": 35001,
+      "overlapping_records": 2,
+      "no_record": 69999
+    },
+    "seed": 91401,
+    "policy_options": {
+      "min_dp": 10.0,
+      "min_gq": 20.0,
+      "allow_block_dp": true,
+      "allow_unfiltered": true
+    },
+    "limits": "Every exported interval and count checked; genotype classification independently checked in sampled windows, not every genome base."
+  }
+}
