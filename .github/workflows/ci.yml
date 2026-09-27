@@ -23,6 +23,8 @@ jobs:
       - run: cargo +stable clippy --locked --all-targets -- -D warnings
       - run: cargo +stable test --locked
       - run: cargo +stable build --locked
+      - name: GIAB example interval checks
+        run: python3 examples/giab/test_overlap.py
       - name: Independent synthetic checks
         run: python3 tests/oracles/run.py target/debug/gvcf-audit
 

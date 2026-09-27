@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-27",
+  "release": "https://github.com/DylanCosto/gvcf-audit/releases/tag/v0.6.0",
+  "checks": {
+    "HG002": {
+      "audit_version": "0.6.0",
+      "records_scanned": 92105721,
+      "warnings": [],
+      "autosomal_bases": 2875001522,
+      "independent_cds_check": true
+    },
+    "HG003": {
+      "audit_version": "0.6.0",
+      "records_scanned": 92732214,
+      "warnings": [],
+      "autosomal_bases": 2875001522,
+      "independent_cds_check": true
+    }
+  },
+  "small_interval_tests": 5,
+  "scope": "Autosomes only; no variant truth evaluation",
+  "reference": "Case-study NCBI GRCh38 no-alt analysis set; see sources.json"
+}

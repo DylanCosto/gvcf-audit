@@ -1,0 +1,161 @@
+{
+  "sample": "HG002",
+  "audit_version": "0.6.0",
+  "caller": "DeepTrio 1.10.0 WGS",
+  "scope": "GRCh38 chr1-22",
+  "stratifications_version": "3.6",
+  "benchmark_version": "4.2.1",
+  "policy": {
+    "min_dp": 10.0,
+    "min_gq": 20.0,
+    "allow_block_dp": false,
+    "allow_unfiltered": false
+  },
+  "note": "Base-level overlap, not variant precision or recall. Region categories overlap.",
+  "results": {
+    "autosomes": {
+      "requested_bases": 2875001522,
+      "callable_bases": 2662984522,
+      "callable_percent": 92.62549955617033,
+      "bases_by_state": {
+        "callable_reference": 2659357033,
+        "callable_variant": 3627489,
+        "complex_variant": 2897897,
+        "low_depth": 70582500,
+        "low_gq": 4818322,
+        "no_call": 3553825,
+        "overlapping_records": 349536,
+        "reference_ambiguous": 129814920
+      }
+    },
+    "giab_high_confidence": {
+      "requested_bases": 2542242843,
+      "callable_bases": 2528824655,
+      "callable_percent": 99.47219094206729,
+      "bases_by_state": {
+        "callable_reference": 2525502512,
+        "callable_variant": 3322143,
+        "complex_variant": 1531713,
+        "low_depth": 8171688,
+        "low_gq": 2446674,
+        "no_call": 1222702,
+        "overlapping_records": 45411
+      }
+    },
+    "refseq_cds": {
+      "requested_bases": 32833126,
+      "callable_bases": 32357872,
+      "callable_percent": 98.55251674787226,
+      "bases_by_state": {
+        "callable_reference": 32335748,
+        "callable_variant": 22124,
+        "complex_variant": 5132,
+        "low_depth": 429029,
+        "low_gq": 23009,
+        "no_call": 17554,
+        "overlapping_records": 530
+      }
+    },
+    "low_mappability": {
+      "requested_bases": 219849924,
+      "callable_bases": 137636729,
+      "callable_percent": 62.60485630188346,
+      "bases_by_state": {
+        "callable_reference": 137414103,
+        "callable_variant": 222626,
+        "complex_variant": 173214,
+        "low_depth": 68458451,
+        "low_gq": 1100825,
+        "no_call": 1293484,
+        "overlapping_records": 24188,
+        "reference_ambiguous": 11163033
+      }
+    },
+    "segmental_duplications": {
+      "requested_bases": 143344971,
+      "callable_bases": 112403571,
+      "callable_percent": 78.41472931757055,
+      "bases_by_state": {
+        "callable_reference": 112238336,
+        "callable_variant": 165235,
+        "complex_variant": 173290,
+        "low_depth": 29670888,
+        "low_gq": 568686,
+        "no_call": 503231,
+        "overlapping_records": 24694,
+        "reference_ambiguous": 611
+      }
+    },
+    "difficult_regions": {
+      "requested_bases": 571557290,
+      "callable_bases": 482923780,
+      "callable_percent": 84.49262890164519,
+      "bases_by_state": {
+        "callable_reference": 482143838,
+        "callable_variant": 779942,
+        "complex_variant": 2298477,
+        "low_depth": 69844086,
+        "low_gq": 2602564,
+        "no_call": 2396747,
+        "overlapping_records": 328476,
+        "reference_ambiguous": 11163160
+      }
+    },
+    "cds_giab_high_confidence": {
+      "requested_bases": 31545801,
+      "callable_bases": 31402139,
+      "callable_percent": 99.5445923214947,
+      "bases_by_state": {
+        "callable_reference": 31381641,
+        "callable_variant": 20498,
+        "complex_variant": 2976,
+        "low_depth": 114696,
+        "low_gq": 15592,
+        "no_call": 10143,
+        "overlapping_records": 255
+      }
+    },
+    "cds_low_mappability": {
+      "requested_bases": 1552302,
+      "callable_bases": 1117572,
+      "callable_percent": 71.99449591638741,
+      "bases_by_state": {
+        "callable_reference": 1116355,
+        "callable_variant": 1217,
+        "complex_variant": 406,
+        "low_depth": 423195,
+        "low_gq": 5950,
+        "no_call": 5147,
+        "overlapping_records": 32
+      }
+    },
+    "cds_segmental_duplications": {
+      "requested_bases": 2136212,
+      "callable_bases": 1703255,
+      "callable_percent": 79.73248909752402,
+      "bases_by_state": {
+        "callable_reference": 1701188,
+        "callable_variant": 2067,
+        "complex_variant": 801,
+        "low_depth": 419906,
+        "low_gq": 6470,
+        "no_call": 5728,
+        "overlapping_records": 52
+      }
+    },
+    "cds_difficult_regions": {
+      "requested_bases": 8851304,
+      "callable_bases": 8390195,
+      "callable_percent": 94.79049640595329,
+      "bases_by_state": {
+        "callable_reference": 8382646,
+        "callable_variant": 7549,
+        "complex_variant": 4193,
+        "low_depth": 428148,
+        "low_gq": 14873,
+        "no_call": 13458,
+        "overlapping_records": 437
+      }
+    }
+  }
+}

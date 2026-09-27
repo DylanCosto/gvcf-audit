@@ -1,0 +1,74 @@
+[
+  {
+    "file": "GRCh38_refseq_cds.bed.gz",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/Functional/GRCh38_refseq_cds.bed.gz",
+    "bytes": 1386924,
+    "sha256": "825dad3d0c0d01d8a3555e4b3393eebb13456d1d68ddee5784b31ecf36feb577"
+  },
+  {
+    "file": "GRCh38_lowmappabilityall.bed.gz",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/Mappability/GRCh38_lowmappabilityall.bed.gz",
+    "bytes": 4466885,
+    "sha256": "38707879ab51dcee3dd3331c082e2d9552a9f9d487d4de84f9ebae5b5c556d56"
+  },
+  {
+    "file": "GRCh38_segdups.bed.gz",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/SegmentalDuplications/GRCh38_segdups.bed.gz",
+    "bytes": 65098,
+    "sha256": "09ac029a7d0d681a9f0ed6581a6bc10fc708a834bc3f91c46a9bef504f6055c5"
+  },
+  {
+    "file": "GRCh38_alldifficultregions.bed.gz",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/Union/GRCh38_alldifficultregions.bed.gz",
+    "bytes": 31493049,
+    "sha256": "7cc5f35717ffeed7032ee7a88e063d0cd78510fa8322e5d747fed3f0b2e5becd"
+  },
+  {
+    "file": "HG003_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG003_NA24149_father/NISTv4.2.1/GRCh38/HG003_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+    "bytes": 13219856,
+    "sha256": "652afd3046705af3200f9c87c255fef11bb212dd76c75a19999c9b2df8a3180c"
+  },
+  {
+    "file": "HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+    "kind": "regions",
+    "url": "https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed",
+    "bytes": 11494021,
+    "sha256": "fba9a57c36ec88e5d14ea3e259c8866c7935f4998d3ec0fa2d6c3962da5b5575"
+  },
+  {
+    "file": "HG002.g.vcf.gz",
+    "kind": "gvcf",
+    "url": "https://storage.googleapis.com/deepvariant/case-study-outputs/1.10.0/deeptrio/wgs/HG002.child.g.vcf.gz?generation=1770835070421059",
+    "bytes": 1031609740,
+    "sample": "HG002",
+    "caller": "DeepTrio 1.10.0 WGS"
+  },
+  {
+    "file": "HG003.g.vcf.gz",
+    "kind": "gvcf",
+    "url": "https://storage.googleapis.com/deepvariant/case-study-outputs/1.10.0/wgs/wgs_HG003.deepvariant.g.vcf.gz?generation=1772476769600500",
+    "bytes": 1023866857,
+    "sample": "HG003",
+    "caller": "DeepVariant 1.10.0 WGS"
+  },
+  {
+    "file": "GRCh38_no_alt_analysis_set.fasta",
+    "kind": "reference",
+    "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz",
+    "gunzip": true,
+    "bytes": 3144230986
+  },
+  {
+    "file": "GRCh38_no_alt_analysis_set.fasta.fai",
+    "kind": "reference",
+    "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.fai",
+    "bytes": 7804,
+    "sha256": "502a1b8fb73ccd53285c28a0f12df90c818b4fe3de1e862ef47c593ef1a0a4b4"
+  }
+]

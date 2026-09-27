@@ -20,6 +20,13 @@ They use the small, fictional dataset included in this repository.
 It does not call variants, inspect BAM reads, impute missing genotypes or provide clinical interpretation.
 Use the reported coordinates to investigate the underlying reads in a genome viewer such as IGV.
 
+## Public-genome examples
+
+The [HG002 and HG003 GIAB examples](examples/giab/README.md) show where coding-region
+evidence is missing and how it overlaps difficult genomic regions. They include
+source URLs, exact commands, checked results and scripts to reproduce the figures.
+These are base-level callability examples, not variant accuracy benchmarks.
+
 ## How this differs from coverage tools
 
 | Tool | Input | Main question |
