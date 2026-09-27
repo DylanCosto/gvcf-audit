@@ -23,6 +23,19 @@ Each suite creates and cleans up its own temporary directory. The command works
 from any working directory when given absolute paths. Do not use Python `-O`,
 which disables assertions; the runner refuses it. Failures return a nonzero exit
 code. Both layers run in CI on stable Rust and Rust 1.88, including a release build.
+Push CI runs only on `main`; pull requests run their own checks.
+
+A separate weekly job runs the synthetic suites with a fresh seed each Monday at
+04:17 UTC. It prints the seed and replay command before starting, and repeats the
+command on failure. To try new cases locally or reproduce a weekly failure:
+
+```sh
+python3 tests/oracles/run.py target/debug/gvcf-audit --random-seed
+python3 tests/oracles/run.py target/debug/gvcf-audit --seed 12345
+```
+
+The override applies to each randomized suite. Omitting both flags retains the
+fixed suite defaults. No additional Python dependencies are needed.
 
 ## What is covered
 
@@ -30,6 +43,8 @@ code. Both layers run in CI on stable Rust and Rust 1.88, including a release bu
   aliases, samples, caller adaptations, GQ/depth and filter rules.
 - Reference index validation, compressed/truncated input, HTML escaping, quality
   gates, errors that must leave no report, and existing output protection.
+- Lowercase reference bases (including ambiguous `n`) and a deletion followed by
+  a `*` spanning-deletion record, with the overlap remaining unresolved.
 - Gene/exon interval unions and bounded diagnostic examples.
 - Exact comparison gains/losses, equal totals at different positions, metadata
   guards, malformed partitions, group totals and changed-interval exports.

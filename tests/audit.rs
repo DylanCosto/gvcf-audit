@@ -137,3 +137,64 @@ fn stale_fasta_index_is_rejected() {
     t.audit("bad", &[], 1);
     assert!(!t.0.join("bad").exists());
 }
+
+#[test]
+fn soft_masked_reference_bases_are_callable() {
+    let t = Workspace::new();
+    t.write("reference.fa", ">chr1\nacgTacgtn\n");
+    t.write("reference.fa.fai", "chr1\t9\t6\t9\t10\n");
+    t.write(
+        "sample.g.vcf",
+        concat!(
+            "##fileformat=VCFv4.2\n##contig=<ID=chr1,length=9>\n",
+            "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tS\n",
+            "chr1\t1\t.\tA\t<NON_REF>\t.\tPASS\tEND=1\tGT:MIN_DP:GQ\t0/0:20:30\n",
+            "chr1\t2\t.\tC\tT\t.\tPASS\t.\tGT:DP:GQ\t0/1:20:30\n",
+            "chr1\t3\t.\tG\t<NON_REF>\t.\tPASS\tEND=9\tGT:MIN_DP:GQ\t0/0:20:30\n",
+        ),
+    );
+    t.audit("audit", &[], 0);
+    assert_eq!(
+        t.read("audit/callable.bed"),
+        "chr1\t0\t1\tcallable_reference\nchr1\t1\t2\tcallable_variant\nchr1\t2\t8\tcallable_reference\n"
+    );
+    assert_eq!(
+        t.read("audit/unresolved.bed"),
+        "chr1\t8\t9\treference_ambiguous\n"
+    );
+    let report = t.json("audit/report.json");
+    assert_eq!(report["callable_bases"], 8);
+    assert_eq!(report["reference_mismatches"]["all_input_records"], 0);
+}
+
+#[test]
+fn deletion_and_spanning_deletion_stay_unresolved() {
+    let t = Workspace::new();
+    t.write("reference.fa", ">chr1\nACGTA\n");
+    t.write("reference.fa.fai", "chr1\t5\t6\t5\t6\n");
+    t.write(
+        "sample.g.vcf",
+        concat!(
+            "##fileformat=VCFv4.2\n##contig=<ID=chr1,length=5>\n",
+            "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tS\n",
+            "chr1\t1\t.\tACG\tA\t.\tPASS\t.\tGT:DP:GQ\t0/1:20:30\n",
+            "chr1\t2\t.\tC\t*\t.\tPASS\t.\tGT:DP:GQ\t0/1:20:30\n",
+            "chr1\t4\t.\tT\t<NON_REF>\t.\tPASS\tEND=5\tGT:MIN_DP:GQ\t0/0:20:30\n",
+        ),
+    );
+    t.audit("audit", &[], 0);
+    assert_eq!(
+        t.read("audit/callable.bed"),
+        "chr1\t3\t5\tcallable_reference\n"
+    );
+    assert_eq!(
+        t.read("audit/unresolved.bed"),
+        "chr1\t0\t1\tcomplex_variant\nchr1\t1\t2\toverlapping_records\nchr1\t2\t3\tcomplex_variant\n"
+    );
+    let report = t.json("audit/report.json");
+    assert_eq!(report["callable_bases"], 2);
+    assert_eq!(
+        report["record_states_before_overlap_and_reference_mask"]["unsupported_allele"],
+        1
+    );
+}
