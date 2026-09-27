@@ -1,0 +1,6 @@
+contig	start	end	gene	exon
+demo	0	150	EXAMPLE_A	EXAMPLE_A_exon_1
+demo	100	250	EXAMPLE_A	EXAMPLE_A_exon_2
+demo	400	650	EXAMPLE_A	EXAMPLE_A_exon_3
+demo	700	850	EXAMPLE_B	EXAMPLE_B_exon_1
+demo	800	950	EXAMPLE_B	EXAMPLE_B_exon_2
