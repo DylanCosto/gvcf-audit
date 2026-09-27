@@ -1,0 +1,14 @@
+##fileformat=VCFv4.2
+##source=DeepVariant
+##contig=<ID=demo,length=1000>
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Depth">
+##FORMAT=<ID=MIN_DP,Number=1,Type=Integer,Description="Minimum depth in block">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype quality">
+##INFO=<ID=END,Number=1,Type=Integer,Description="Last position in block">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Example
+demo	1	.	A	<*>	.	.	END=400	GT:MIN_DP:GQ	0/0:30:40
+demo	401	.	A	<*>	.	.	END=600	GT:MIN_DP:GQ	0/0:4:30
+demo	601	.	A	<*>	.	.	END=700	GT:MIN_DP:GQ	./.:0:0
+demo	701	.	A	G	.	PASS	.	GT:DP:GQ	0/1:25:35
+demo	702	.	A	<*>	.	.	END=900	GT:MIN_DP:GQ	0/0:25:35
