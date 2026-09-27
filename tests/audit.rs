@@ -31,6 +31,32 @@ fn audit_matches_hand_calculated_intervals_and_counts() {
 }
 
 #[test]
+fn multiqc_summary_preserves_counts_names_and_gate_status() {
+    let t = Workspace::core();
+    let original = t.read("sample.g.vcf");
+    for (i, sample) in ["001", "#sample", "sample \"quoted\""].iter().enumerate() {
+        t.write(
+            "sample.g.vcf",
+            &original.replace("\tS\n", &format!("\t{sample}\n")),
+        );
+        let out = format!("audit-{i}");
+        t.audit(&out, &[], 0);
+        let text = t.read(&format!("{out}/gvcf_audit_mqc.tsv"));
+        assert!(text.contains("# plot_type: generalstats\n"));
+        assert_eq!(
+            text.lines().last().unwrap(),
+            format!(
+                "\"{sample}\"\t20.000000\t50\t46.000000\t2.000000\t\"not requested\"\t10\t20\t\"gatk\"\tfalse\tfalse"
+            )
+        );
+    }
+    t.audit("pass", &["--min-callable-percent", "20"], 0);
+    t.audit("fail", &["--min-callable-percent", "21", "--quiet"], 2);
+    assert!(t.read("pass/gvcf_audit_mqc.tsv").contains("\t\"passed\"\t"));
+    assert!(t.read("fail/gvcf_audit_mqc.tsv").contains("\t\"failed\"\t"));
+}
+
+#[test]
 fn raw_gatk_filter_is_visible_and_override_is_explicit() {
     let t = Workspace::core();
     let result = t.audit("default", &[], 0);

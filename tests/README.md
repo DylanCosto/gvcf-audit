@@ -81,3 +81,18 @@ It was independently checked before being saved here.
 
 When behavior intentionally changes, review the expected intervals and policy
 first. Do not refresh expected outputs just to make a failing test pass.
+# MultiQC integration
+
+`python3 tests/integrations/multiqc.py target/debug/gvcf-audit /path/to/multiqc`
+runs four small audits through MultiQC in strict mode and checks its parsed General Statistics.
+It covers numeric and quoted sample names, a leading `#`, failed/passed/unrequested gates,
+and the explicit unset-filter override. CI uses MultiQC 1.35; this dependency is only for the test.
+
+## Cohort checks
+
+The Rust tests compare hand-calculated gene/exon matrices, check incompatible and damaged
+inputs, and exercise 500 distinct saved samples. The source gVCF and FASTA are removed in
+one test to check that summaries are self-contained. `oracles/cohort.py` independently
+computes per-base callability and overlapping target unions for 12 randomized samples,
+then checks both matrices and group statistics. It uses the same replayable seed mechanism
+as the other suites.

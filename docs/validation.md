@@ -1,6 +1,6 @@
 # Reproducible checks
 
-The repository now includes 14 Rust integration tests and 362 synthetic checks in
+The repository now includes 19 Rust integration tests and 364 synthetic checks in
 Python, using only its standard library. See [the test instructions](../tests/README.md).
 They cover the audit, comparisons, annotation conversion, gene/exon unions, reference
 validation, errors and output protection. CI runs both suites on stable Rust and Rust
@@ -10,6 +10,19 @@ The release notes below describe checks run at the time of each release. Their s
 about external validation scripts describe those historical releases. The latest synthetic
 suites have since been brought into the repository. Full public-genome runs remain separate
 historical evidence; they are not part of CI. Test counts are checks, not a coverage percentage.
+
+## Validation for 0.6.0
+
+All 19 Rust integration tests and 364 independent synthetic checks pass on Rust 1.88.
+The cohort checks include hand-calculated gene/exon tables, incompatible or damaged
+saved audits, a 500-sample synthetic matrix and randomized comparisons with an
+independent per-base model. The full synthetic suite also passes with fresh seed
+2170762246655765975. The 500-sample case uses small fixtures, not full-genome reports,
+and is not a production memory or runtime benchmark.
+
+MultiQC 1.35 parses four audit exports in strict mode. The integration check verifies
+sample names, callability, missing records, unassessed filters, quality gates and
+policy settings against expected values. MultiQC remains an optional downstream tool.
 
 ## Validation for 0.5.1
 

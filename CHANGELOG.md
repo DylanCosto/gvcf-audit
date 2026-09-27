@@ -1,5 +1,10 @@
 # Changes
 
+## 0.6.0
+
+- Export a small MultiQC summary alongside each audit, including quality-gate status and policy settings.
+- Summarize saved audits as gene/exon callability matrices, with matching-target and policy checks.
+
 ## 0.5.1
 
 - Add small Rust fixtures, portable synthetic checks and CI on stable Rust and Rust 1.88.

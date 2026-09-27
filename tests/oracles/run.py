@@ -30,7 +30,7 @@ if seed is not None:
     replay.extend(["--seed", str(seed)])
 print(f"Seed: {seed if seed is not None else 'fixed suite defaults'}", flush=True)
 print(f"Replay: {shlex.join(replay)}", flush=True)
-for name in ("audit", "release", "compare", "targets", "reblocking", "genes"):
+for name in ("audit", "release", "compare", "targets", "reblocking", "genes", "cohort"):
     print(f"Running {name} checks", flush=True)
     result = subprocess.run(
         [
