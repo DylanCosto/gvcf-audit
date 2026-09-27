@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gVCF audit · Example</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,-apple-system,sans-serif;color:#17313c;background:#f4f7f8}*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:40px 24px 70px}header{border-top:5px solid #176c61;padding-top:24px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:#4d696c}h1{font-size:36px;margin:8px 0 12px;overflow-wrap:anywhere}h2{font-size:21px;margin:0 0 16px}p{line-height:1.6}.muted{color:#516b74;font-size:14px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}.card,section{background:white;border:1px solid #dce6e8;border-radius:12px;padding:22px}.big{font-size:34px;font-weight:700;margin:8px 0}.green{color:#176c61}section{margin-top:20px;overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:#526971;font-weight:600}td,th{padding:11px 8px;border-bottom:1px solid #e6edef}td:first-child{padding-left:0}.number{text-align:right;font-variant-numeric:tabular-nums}.track{width:130px;height:8px;border-radius:8px;background:#edf1f2;overflow:hidden}.good{height:100%;background:#208373}.other{height:100%;background:#d59b4c}.notice{border-left:4px solid #d59b4c}li{line-height:1.6;margin:8px 0}a{color:#156c62}.path{overflow-wrap:anywhere}footer{margin-top:25px;color:#516b74;font-size:13px}@media(max-width:640px){.cards{grid-template-columns:1fr}main{padding:22px 14px}h1{font-size:28px}.track{width:65px}}
+</style><main><header><div class=eyebrow>gvcf-audit · 0.2.0 · completed</div><h1>Example</h1><p>Where this sample has usable genotype evidence, and why other regions remain unresolved.</p><p class=muted>Union of supplied BED intervals · deepvariant rules · minimum depth 10 · minimum GQ 20</p><p>No pass/fail limits were requested.</p></header>
+<div class=cards><div class=card><div>Callable bases</div><div class="big green">60.00%</div><div class=muted>600 of 1000 requested bases</div></div><div class=card><div>Unresolved bases</div><div class=big>400</div><div class=muted>Each assigned a primary reason</div></div><div class=card><div>Records read</div><div class=big>5</div><div class=muted>Full-file scan · 0.00 seconds</div></div></div>
+<section><h2>Evidence by status</h2><table><thead><tr><th>Status</th><th class=number>Bases</th><th class=number>Share</th><th>Distribution</th></tr></thead><tbody><tr><td>callable reference</td><td class=number>599</td><td class=number>59.90%</td><td><div class=track><div class='good' style='width:59.9000%'></div></div></td></tr><tr><td>callable variant</td><td class=number>1</td><td class=number>0.10%</td><td><div class=track><div class='good' style='width:0.1000%'></div></div></td></tr><tr><td>no record</td><td class=number>100</td><td class=number>10.00%</td><td><div class=track><div class='other' style='width:10.0000%'></div></div></td></tr><tr><td>no call</td><td class=number>100</td><td class=number>10.00%</td><td><div class=track><div class='other' style='width:10.0000%'></div></div></td></tr><tr><td>low depth</td><td class=number>180</td><td class=number>18.00%</td><td><div class=track><div class='other' style='width:18.0000%'></div></div></td></tr><tr><td>reference ambiguous</td><td class=number>20</td><td class=number>2.00%</td><td><div class=track><div class='other' style='width:2.0000%'></div></div></td></tr></tbody></table><p class=muted>Statuses are mutually exclusive. Reference ambiguity overrides record overlap, which overrides a record’s primary reason.</p></section>
+<section class=notice><h2>How to interpret this report</h2><p>Callable means the input supplies haploid or diploid small-variant genotype evidence passing the stated filters, depth and GQ thresholds. It does not establish absence of every variant type or correctness of the caller. Indel/structural spans and overlapping records are conservatively unresolved.</p><ul></ul></section>
+<section><h2>Requested regions</h2><p><label>Find a region <input id="region-search" type="search" placeholder="Name or contig"></label> <label>Sort <select id="region-sort"><option value="input">Input order</option><option value="lowest">Lowest callability</option><option value="highest">Highest callability</option></select></label></p><table><thead><tr><th>Name</th><th>Interval</th><th class=number>Bases</th><th class=number>Callable</th></tr></thead><tbody id="region-rows"></tbody></table><p class=muted><span id="region-count"></span> <button id="region-prev" type="button">Previous</button> <button id="region-next" type="button">Next</button></p><noscript><p>Enable JavaScript to explore regions, or open the All regions TSV download.</p></noscript><p class=muted>Coordinates are 0-based, half-open. Overlapping BED rows are reported independently; overall totals count their union once.</p></section>
+<section><h2>Downloads and provenance</h2><p><a href="callable.bed">Callable BED</a> · <a href="unresolved.bed">Unresolved BED</a> · <a href="regions.tsv">All regions TSV</a> · <a href="report.json">Full JSON report</a></p><p class="muted path">Input: examples/sample.g.vcf</p><p class=muted>Input paths, sizes, modification times, caller adaptations and policy options are recorded in JSON. No checksums were computed. This report is self-contained and makes no network requests.</p></section><footer>Generated by gvcf-audit. Review the input caller’s limitations alongside these quality thresholds.</footer></main><script id="region-data" type="application/json">[["demo",0,400,"Passing region",400],["demo",400,700,"Low depth and missing calls",0],["demo",700,1000,"Variant and gap",200]]</script><script>(() => {
+  const rows = JSON.parse(document.getElementById('region-data').textContent);
+  const search = document.getElementById('region-search');
+  const sort = document.getElementById('region-sort');
+  const body = document.getElementById('region-rows');
+  const previous = document.getElementById('region-prev');
+  const next = document.getElementById('region-next');
+  const fraction = row => row[4] / (row[2] - row[1]);
+  let selected = rows;
+  let page = 0;
+  const pageSize = 50;
+
+  function render() {
+    body.replaceChildren();
+    const first = page * pageSize;
+    for (const row of selected.slice(first, first + pageSize)) {
+      const tr = document.createElement('tr');
+      const cells = [row[3], `${row[0]}:${row[1]}–${row[2]}`,
+        row[2] - row[1], `${(100 * fraction(row)).toFixed(2)}%`];
+      cells.forEach((value, index) => {
+        const td = document.createElement('td');
+        td.textContent = value;
+        if (index >= 2) td.className = 'number';
+        tr.append(td);
+      });
+      body.append(tr);
+    }
+    document.getElementById('region-count').textContent = selected.length
+      ? `${first + 1}–${Math.min(first + pageSize, selected.length)} of ${selected.length} regions.`
+      : 'No matching regions.';
+    previous.disabled = page === 0;
+    next.disabled = first + pageSize >= selected.length;
+  }
+
+  function update() {
+    const query = search.value.toLowerCase().trim();
+    selected = rows.filter(row => `${row[3]} ${row[0]}`.toLowerCase().includes(query));
+    if (sort.value !== 'input') {
+      const direction = sort.value === 'lowest' ? 1 : -1;
+      selected.sort((a, b) => direction * (fraction(a) - fraction(b)));
+    }
+    page = 0;
+    render();
+  }
+
+  search.addEventListener('input', update);
+  sort.addEventListener('change', update);
+  previous.addEventListener('click', () => { page--; render(); });
+  next.addEventListener('click', () => { page++; render(); });
+  render();
+})();
+</script></html>

@@ -1,0 +1,4 @@
+contig	start	end	name	bases	callable_bases	callable_percent	callable_reference	callable_variant	no_record	no_call	partial_no_call	site_filtered	genotype_filtered	quality_missing	low_depth	low_gq	unsupported_ploidy	unsupported_allele	complex_variant	overlapping_records	reference_mismatch	reference_ambiguous	filter_not_assessed
+demo	0	400	Passing region	400	400	100.0000	400	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+demo	400	700	Low depth and missing calls	300	0	0.0000	0	0	0	100	0	0	0	0	180	0	0	0	0	0	0	20	0
+demo	700	1000	Variant and gap	300	200	66.6667	199	1	100	0	0	0	0	0	0	0	0	0	0	0	0	0	0
