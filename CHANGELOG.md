@@ -1,5 +1,13 @@
 # Changes
 
+## 0.3.0
+
+- Add bounded record and interval examples with observed values and exclusion rules.
+- Show full-input and in-scope reference mismatch records alongside primary base counts.
+- Add an optional mismatch-record limit without changing the existing base limit.
+- Add explicit gene/exon targets, summaries and searchable offline tables. Overlaps count once within each group.
+- Validate gene/exon totals against GENCODE v50 chromosome 22 annotations and a public GATK genome.
+
 ## 0.2.0
 
 - Validate FASTA names, lengths, offsets and line layout against its index.

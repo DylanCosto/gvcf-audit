@@ -2,12 +2,12 @@
 
 Explain where a sample has usable genotype evidence, and why other regions remain unresolved.
 
-**Version 0.2.0.** A local command-line tool for auditing one selected sample using explicit depth,
+**Version 0.3.0.** A local command-line tool for auditing one selected sample using explicit depth,
 genotype-quality and filter rules. It has no imputation, variant calling or clinical interpretation.
 
 ## Install and run
 
-Download the Linux binary or source archive from the
+Download the latest published Linux binary or source archive from the
 [releases page](https://github.com/DylanCosto/gvcf-audit/releases).
 A source checkout or unpacked source archive can be installed with:
 
@@ -47,7 +47,7 @@ The output directory must be new. Open `audit/report.html` in a browser; it work
 - `--reference`: the same uncompressed FASTA used to call the sample, with its `.fai` index.
   Create an index with `samtools faidx reference.fa` if needed.
 - `--bed`: optional tab-separated BED3 or BED4, plain or gzip. Coordinates are 0-based, half-open.
-  Without it, the scope is **every FASTA contig**, including unobserved decoys and alternate contigs.
+  Without either target option, the scope is **every FASTA contig**, including unobserved decoys and alternate contigs.
 - `--min-dp 10 --min-gq 20`: defaults; change them to suit the assay.
 
 Overlapping BED rows get independent summaries. Overall totals count their union once. BED12 blocks are
@@ -57,7 +57,9 @@ The tool makes one sequential scan of the complete VCF, even when a BED is suppl
 No VCF index or checksum pass is required. It uses interval boundaries rather than expanding gVCF blocks
 into per-base records. The FASTA layout is checked against its index once, then one contig at a time is memory-mapped
 and scanned for ambiguous reference runs. Memory also holds BED intervals, reference ambiguity runs,
-and simultaneously overlapping records.
+and simultaneously overlapping records. Report memory and file size also grow with the number of
+input rows and gene/exon groups. Identical annotation rows can be deduplicated before an audit if
+separate transcript-row summaries are not needed.
 
 ## Outputs
 
@@ -73,6 +75,53 @@ Both BEDs use reference contig names and 0-based, half-open coordinates. Togethe
 exactly. Contigs are grouped in input encounter order, followed by unobserved reference contigs; they are
 not necessarily lexicographically ordered. Outputs are staged and published together only after a
 successful scan. Invalid/truncated input returns a nonzero exit code and leaves no completed report.
+
+## Gene and exon targets
+
+Use `--gene-targets targets.tsv` instead of `--bed` to summarize named exons and genes. The file can be
+plain or gzip-compressed and must have exactly these five tab-separated columns, including the header:
+
+```text
+contig	start	end	gene	exon
+chr1	10000	10200	GENE_A	exon_1
+chr1	11000	11200	GENE_A	exon_2
+```
+
+Coordinates are **0-based, half-open**. Supply targets from the same assembly as the reference.
+This is an annotated TSV, not BED5 (whose fifth column normally means score). Blank lines and lines
+starting with `#` are ignored; gene and exon identifiers must be present and cannot be `.`.
+
+```sh
+gvcf-audit --gvcf sample.g.vcf.gz --reference reference.fa \
+    --gene-targets targets.tsv --out gene-audit
+```
+
+This adds `genes.tsv`, `exons.tsv`, and searchable gene/exon tables in HTML. JSON includes `genes` and
+`exons`, each with callable and unresolved bases, the main exclusion reason, and all state counts.
+Genes also report how many targeted exons have any unresolved bases. These are summaries of the
+**supplied targets**, not claims about every exon or the full genomic span of a gene.
+
+Repeated or overlapping intervals are merged within each gene and within each exon identifier. Genes
+are keyed by reference contig and gene identifier; exons by contig, gene and exon identifier. Repeated
+exon identifiers are treated as one exon, even when their intervals are disjoint. Use distinct identifiers
+if you want transcript-specific exons kept separate. Different genes and exon identifiers may overlap,
+so their counts must not be summed to obtain overall totals. Introns are not filled in between targets.
+
+Try `--gene-targets examples/gene-targets.tsv` with the included example input and reference.
+
+## Investigating exclusions
+
+The HTML report shows record examples with coordinates, input line numbers, observed GT/DP/MIN_DP/GQ
+and filters, and the rule that excluded them. Reference mismatches include the first differing base and
+its 0-based coordinate. A separate set of examples shows final unresolved intervals, including gaps,
+overlaps and ambiguous reference bases. The same information appears under `diagnostics` in JSON.
+
+Examples are limited to five per reason and type by default. Set `--max-examples 0` to disable them or
+choose a limit up to 100. Text fields in record examples are shortened to 80 characters; the first
+reference mismatch is still located using the full REF allele. Examples are taken in encounter order,
+not randomly sampled, and only records overlapping the requested scope are retained. Their full record
+spans may extend beyond the targets. They show primary record reasons plus missing MIN_DP, not every
+simultaneous failure. All records are still counted and checked when examples are disabled.
 
 ## Pipeline use
 
@@ -90,6 +139,11 @@ gvcf-audit --gvcf sample.g.vcf.gz --reference reference.fa --bed targets.bed \
 The limits apply to the union of requested regions. The reference-mismatch limit counts the primary
 `reference_mismatch` status; it is not a count of every mismatching record under overlaps or ambiguous
 reference bases. Mismatching records anywhere in the input also produce a report warning.
+Use `--max-reference-mismatch-records 0` to fail on any mismatching record whose span overlaps the
+requested scope, even when ambiguity or another record masks it in base counts. The report displays
+full-input record counts, in-scope record counts, and primary base counts together. A mismatch outside
+the scope remains a warning but does not fail either scope limit. The existing base-limit behavior is
+unchanged.
 No pass/fail limits are enabled by default. `--quiet` suppresses progress; errors and failed limits remain visible.
 
 `report.json` identifies its format as `gvcf-audit-report-v1`. Its schema is in
@@ -157,6 +211,7 @@ reblocking.
 ## Current limits
 
 - No indexed target-only reading, cohort aggregation, run-to-run comparison or automatic gene annotation.
+  Gene/exon summaries require the explicit target file described above.
 - No BCF or compressed FASTA support in this version.
 - No automatic repair or normalization of the input.
 - Every VCF record and requested BED interval must resolve in the FASTA. Unused header contigs absent
@@ -169,6 +224,7 @@ reblocking.
 ## Source layout
 
 `vcf.rs` handles record policy, `reference.rs` reference access, `intervals.rs` interval accounting,
-`report.rs` report generation, and `main.rs` the CLI and streaming orchestration.
+`report.rs` report generation, `genes.rs` target grouping, `diagnostics.rs` bounded examples, and
+`main.rs` the CLI and streaming orchestration.
 
 Licensed under MIT. No production genomes or scoring weights are included.
