@@ -16,9 +16,24 @@ an expected list of variants for the sample.
 [**Explore the example reports**](https://DylanCosto.github.io/gvcf-audit/) without installing anything.
 They use the small, fictional dataset included in this repository.
 
-**Version 0.5.1.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
+**Version 0.6.0.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
 It does not call variants, inspect BAM reads, impute missing genotypes or provide clinical interpretation.
 Use the reported coordinates to investigate the underlying reads in a genome viewer such as IGV.
+
+## How this differs from coverage tools
+
+| Tool | Input | Main question |
+|---|---|---|
+| [mosdepth](https://github.com/brentp/mosdepth#readme) | BAM/CRAM alignments | How many bases reach each coverage threshold? |
+| [GATK CallableLoci](https://gatk.broadinstitute.org/hc/en-us/articles/54698751614363-CallableLoci-EXPERIMENTAL) | Alignments and a reference | Which loci meet read-depth, mapping-quality and base-quality rules? |
+| gvcf-audit | gVCF and its reference | Where did the caller retain usable genotype evidence under the chosen depth, GQ and filter rules? |
+
+Use mosdepth for alignment coverage summaries. CallableLoci classifies loci from read
+evidence; current GATK documentation lists it as experimental. gvcf-audit is useful when
+only the gVCF is shared, or when transferring BAMs is impractical. A sufficiently covered
+locus can still be unresolved here because its genotype is missing, GQ is low, filters
+fail or the gVCF has no record. Conversely, gvcf-audit cannot inspect individual reads
+or replace alignment QC. These tools answer related questions with different evidence.
 
 ## Install and run
 
@@ -105,6 +120,7 @@ separate transcript-row summaries are not needed.
 | `regions.tsv` | Every BED row, its callable fraction and base counts for each status |
 | `callable.bed` | Merged intervals labelled `callable_reference` or `callable_variant` |
 | `unresolved.bed` | Merged intervals labelled with their primary exclusion reason |
+| `gvcf_audit_mqc.tsv` | MultiQC summary with callability, missing records, unset filters and quality gates |
 
 Both BEDs use reference contig names and 0-based, half-open coordinates. Together they partition the scope
 exactly. Contigs are grouped in input encounter order, followed by unobserved reference contigs; they are
@@ -242,7 +258,35 @@ quality gate. Such gate failures are shown as warnings. Invalid/incompatible inp
 leaves no completed output directory. There is no automatic regression threshold in this version.
 See [the comparison format](docs/comparison-format.md) for field definitions.
 
+## Summarize a cohort
+
+```sh
+gvcf-audit summarize sample-a/audit sample-b/audit --out cohort
+gvcf-audit summarize --audit-list audits.txt --level exon --out exon-cohort
+```
+
+Use saved audits generated with the same gene targets, reference and quality policy.
+The command creates gene-by-sample (or exon-by-sample) matrices of callable percentages
+and exact base counts, plus group and sample summaries. It validates saved reports and
+BEDs without reopening the original gVCFs or FASTAs. Duplicate samples, incompatible
+targets/policies and inconsistent counts are errors.
+
+`--min-callable-percent 95` counts samples below that percentage for each group; it does
+not create a pass/fail exit code. Failed input quality gates remain visible. See the
+[cohort format](docs/cohort-format.md) for inputs, reference assertions, files and memory use.
+
 ## Pipeline use
+
+MultiQC finds `gvcf_audit_mqc.tsv` automatically. Run `multiqc path/to/audits` to add
+the audit summaries to its General Statistics table; no plugin or configuration is needed.
+The export is also written when an audit exits with code 2 for failed quality limits.
+It distinguishes passed, failed and unrequested limits. Depth, GQ and filter settings
+are included as initially hidden columns. Full exclusion counts remain in `report.json`.
+
+Use unique gVCF sample names within one MultiQC report: MultiQC merges duplicate names.
+Compare percentages only for matching targets and quality policies; MultiQC does not check those
+conditions. Sample names are quoted to preserve leading zeros and spaces. Embedded control
+characters are replaced with spaces in this export. MultiQC is optional and is not needed to run an audit.
 
 Set explicit quality limits when an automated workflow needs a pass/fail decision:
 
@@ -329,7 +373,7 @@ reblocking.
 
 ## Current limits
 
-- No indexed target-only reading, cohort aggregation or automatic annotation download.
+- No indexed target-only reading or automatic annotation download.
   Supply a target TSV directly or create one from a matching GTF/GFF3 with `targets`.
 - No BCF or compressed FASTA support in this version.
 - No automatic repair or normalization of the input.
