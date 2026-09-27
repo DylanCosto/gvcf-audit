@@ -6,6 +6,7 @@ mod genes;
 mod intervals;
 mod reference;
 mod report;
+mod targets;
 mod vcf;
 
 use clap::Parser;
@@ -30,7 +31,7 @@ fn fail<T>(message: impl Into<String>) -> Result<T> {
 #[command(
     version,
     about = "Explain callability and missing evidence in a gVCF",
-    after_help = "Compare existing audits with: gvcf-audit compare --help\n\nOutputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html; --gene-targets adds genes.tsv and exons.tsv.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe audit scans the entire input, even with selected targets; compressed FASTA and BCF are not supported."
+    after_help = "Compare existing audits with: gvcf-audit compare --help\nConvert GTF/GFF3 annotations with: gvcf-audit targets --help\n\nOutputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html; --gene-targets adds genes.tsv and exons.tsv.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe audit scans the entire input, even with selected targets; compressed FASTA and BCF are not supported."
 )]
 pub struct Args {
     /// gVCF or VCF, plain text, gzip or BGZF
@@ -389,6 +390,12 @@ fn main() {
                 .chain(std::env::args_os().skip(2)),
         ));
         publish(&args.out, |dir| compare::run(&args, dir))
+    } else if std::env::args_os().nth(1).is_some_and(|s| s == "targets") {
+        let args = parsed(targets::Args::try_parse_from(
+            std::iter::once(std::ffi::OsString::from("gvcf-audit targets"))
+                .chain(std::env::args_os().skip(2)),
+        ));
+        targets::run(&args)
     } else {
         run(&parsed(Args::try_parse()))
     };
