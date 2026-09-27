@@ -1,3 +1,6 @@
+mod compare;
+mod compare_bed;
+mod compare_report;
 mod diagnostics;
 mod genes;
 mod intervals;
@@ -27,7 +30,7 @@ fn fail<T>(message: impl Into<String>) -> Result<T> {
 #[command(
     version,
     about = "Explain callability and missing evidence in a gVCF",
-    after_help = "Outputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html; --gene-targets adds genes.tsv and exons.tsv.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe audit scans the entire input, even with selected targets; compressed FASTA and BCF are not supported."
+    after_help = "Compare existing audits with: gvcf-audit compare --help\n\nOutputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html; --gene-targets adds genes.tsv and exons.tsv.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe audit scans the entire input, even with selected targets; compressed FASTA and BCF are not supported."
 )]
 pub struct Args {
     /// gVCF or VCF, plain text, gzip or BGZF
@@ -340,11 +343,14 @@ fn run(args: &Args) -> Result<bool> {
     {
         return fail("--min-callable-percent must be between 0 and 100");
     }
-    if args.out.exists() {
+    publish(&args.out, |dir| audit(args, dir))
+}
+
+fn publish(out: &Path, operation: impl FnOnce(&Path) -> Result<bool>) -> Result<bool> {
+    if out.exists() {
         return fail("Output directory already exists; choose a new --out directory");
     }
-    let parent = args
-        .out
+    let parent = out
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
         .unwrap_or(Path::new("."));
@@ -355,11 +361,11 @@ fn run(args: &Args) -> Result<bool> {
         SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos()
     ));
     std::fs::create_dir(&staging)?;
-    let result = audit(args, &staging).and_then(|passed| {
-        if args.out.exists() {
+    let result = operation(&staging).and_then(|passed| {
+        if out.exists() {
             return fail("Output directory appeared during the audit; refusing to replace it");
         }
-        std::fs::rename(&staging, &args.out)?;
+        std::fs::rename(&staging, out)?;
         Ok(passed)
     });
     if result.is_err() {
@@ -368,13 +374,25 @@ fn run(args: &Args) -> Result<bool> {
     result
 }
 
-fn main() {
-    let args = Args::try_parse().unwrap_or_else(|error| {
+fn parsed<T>(result: std::result::Result<T, clap::Error>) -> T {
+    result.unwrap_or_else(|error| {
         let code = if error.use_stderr() { 1 } else { 0 };
         let _ = error.print();
         std::process::exit(code);
-    });
-    match run(&args) {
+    })
+}
+
+fn main() {
+    let result = if std::env::args_os().nth(1).is_some_and(|s| s == "compare") {
+        let args = parsed(compare::Args::try_parse_from(
+            std::iter::once(std::ffi::OsString::from("gvcf-audit compare"))
+                .chain(std::env::args_os().skip(2)),
+        ));
+        publish(&args.out, |dir| compare::run(&args, dir))
+    } else {
+        run(&parsed(Args::try_parse()))
+    };
+    match result {
         Ok(true) => {}
         Ok(false) => {
             eprintln!("Quality limits were not met. See the completed report for details.");
