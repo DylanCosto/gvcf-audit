@@ -1,5 +1,11 @@
 # Changes
 
+## 0.5.0
+
+- Convert GTF and GFF3 exon annotations into gene targets with the `targets` command.
+- Follow GFF3 parent links, handle shared exons, and filter by contig or gene ID.
+- Preserve annotation IDs, generate coordinate labels when exon IDs are absent, and remove duplicate targets.
+
 ## 0.4.0
 
 - Compare saved audits with exact callability gains/losses, state transitions and gene/exon summaries.

@@ -16,7 +16,7 @@ an expected list of variants for the sample.
 [**Explore the example reports**](https://DylanCosto.github.io/gvcf-audit/) without installing anything.
 They use the small, fictional dataset included in this repository.
 
-**Version 0.4.0.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
+**Version 0.5.0.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
 It does not call variants, inspect BAM reads, impute missing genotypes or provide clinical interpretation.
 Use the reported coordinates to investigate the underlying reads in a genome viewer such as IGV.
 
@@ -90,6 +90,39 @@ Both BEDs use reference contig names and 0-based, half-open coordinates. Togethe
 exactly. Contigs are grouped in input encounter order, followed by unobserved reference contigs; they are
 not necessarily lexicographically ordered. Outputs are staged and published together only after a
 successful scan. Invalid/truncated input returns a nonzero exit code and leaves no completed report.
+
+## Convert GTF or GFF3 annotations
+
+Create the gene targets file directly from an annotation:
+
+```sh
+gvcf-audit targets --annotation genes.gtf.gz --out targets.tsv
+gvcf-audit --gvcf sample.g.vcf.gz --reference reference.fa \
+    --gene-targets targets.tsv --out gene-audit
+```
+
+GFF3 works the same way. Use `--contig chr22` to select a chromosome, or repeat `--gene ID` to
+select exact annotation gene IDs. Both filters can be repeated and, when combined, must both match.
+Gene symbols are not substituted for IDs. Unknown requested IDs or contigs produce an error.
+
+The converter uses exon features, subtracts one from each start coordinate, and preserves the end
+coordinate on both strands. It sorts the result and removes identical rows. It preserves distinct
+exon IDs and overlapping exons; the audit merges their coverage within each gene.
+
+GTF uses `gene_id` and `exon_id`. GFF3 follows `Parent` links to gene features and uses their `ID`,
+with exon `ID` as the exon label. Shared exons can belong to multiple transcripts or genes, and
+parents may appear after their children. Missing exon IDs get stable coordinate-and-strand labels.
+Missing gene assignments are errors. No transcript is selected as canonical; all supplied exons
+that pass the filters are included.
+
+Input may be plain text, gzip or BGZF. The filename (`.gtf`, `.gff` or `.gff3`, optionally `.gz` or
+`.bgz`) selects the format; a GFF3 version header also works. Use `--format gtf` or `--format gff3`
+for other filenames. GFF1/GFF2 are not supported. `--out` is a new TSV **file**, not a directory.
+
+Use the same genome assembly as your gVCF and reference. This command does not rename contigs,
+lift coordinates between assemblies, or check sequence identity. The audit checks the resulting
+intervals against its FASTA. See [annotation conversion details](docs/annotation-targets.md) for
+identifier conventions, supported GFF3 gene types and limits.
 
 ## Gene and exon targets
 
@@ -276,8 +309,8 @@ reblocking.
 
 ## Current limits
 
-- No indexed target-only reading, cohort aggregation or automatic gene annotation.
-  Gene/exon summaries require the explicit target file described above.
+- No indexed target-only reading, cohort aggregation or automatic annotation download.
+  Supply a target TSV directly or create one from a matching GTF/GFF3 with `targets`.
 - No BCF or compressed FASTA support in this version.
 - No automatic repair or normalization of the input.
 - Every VCF record and requested BED interval must resolve in the FASTA. Unused header contigs absent
@@ -290,7 +323,8 @@ reblocking.
 ## Source layout
 
 `vcf.rs` handles record policy, `reference.rs` reference access, `intervals.rs` interval accounting,
-`report.rs` report generation, `genes.rs` target grouping, `diagnostics.rs` bounded examples, and
+`report.rs` report generation, `genes.rs` target grouping, `targets.rs` annotation conversion,
+`diagnostics.rs` bounded examples, and
 `main.rs` the CLI and streaming orchestration.
 
 Licensed under MIT. No production genomes or scoring weights are included.
