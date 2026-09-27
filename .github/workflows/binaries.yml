@@ -1,0 +1,94 @@
+name: Binaries
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build and attach binaries to
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-musl
+            archive: linux-x86_64-musl
+          - runner: macos-15-intel
+            target: x86_64-apple-darwin
+            archive: macos-x86_64
+          - runner: macos-14
+            target: aarch64-apple-darwin
+            archive: macos-arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+      TARGET: ${{ matrix.target }}
+      ARCHIVE: ${{ matrix.archive }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name || github.sha }}
+      - name: Install Rust
+        run: rustup toolchain install 1.88.0 --profile minimal --target "$TARGET"
+      - run: cargo +1.88.0 test --locked --target "$TARGET"
+      - run: cargo +1.88.0 build --release --locked --target "$TARGET"
+      - name: Independent synthetic checks
+        run: python3 tests/oracles/run.py "target/$TARGET/release/gvcf-audit"
+      - name: Package binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          binary="target/$TARGET/release/gvcf-audit"
+          if [[ -n "$RELEASE_TAG" ]]; then
+            [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+            [[ "$("$binary" --version)" == "gvcf-audit ${RELEASE_TAG#v}" ]]
+          fi
+          if [[ "$TARGET" == *-linux-musl ]]; then
+            ! readelf -l "$binary" | grep -q INTERP
+            ! readelf -d "$binary" | grep -q NEEDED
+          fi
+          mkdir -p package dist
+          cp "$binary" package/gvcf-audit
+          strip package/gvcf-audit
+          cp LICENSE README.md package/
+          tar -czf "dist/gvcf-audit-$ARCHIVE.tar.gz" -C package gvcf-audit LICENSE README.md
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.archive }}
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  publish:
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Attach tested binaries
+        run: |
+          set -euo pipefail
+          cd dist
+          sha256sum *.tar.gz > SHA256SUMS
+          gh release upload "$RELEASE_TAG" *.tar.gz SHA256SUMS
