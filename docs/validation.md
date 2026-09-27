@@ -1,4 +1,17 @@
-# Validation for 0.5.0
+# Reproducible checks
+
+The repository now includes 12 Rust integration tests and 362 synthetic checks in
+Python, using only its standard library. See [the test instructions](../tests/README.md).
+They cover the audit, comparisons, annotation conversion, gene/exon unions, reference
+validation, errors and output protection. CI runs both suites on stable Rust and Rust
+1.88, with clippy and formatting on stable. No downloaded genomes are needed.
+
+The release notes below describe checks run at the time of each release. Their statements
+about external validation scripts describe those historical releases. The latest synthetic
+suites have since been brought into the repository. Full public-genome runs remain separate
+historical evidence; they are not part of CI. Test counts are checks, not a coverage percentage.
+
+## Validation for 0.5.0
 
 The annotation converter passed 136 checks, including 30 independent interval models represented in
 both GTF and GFF3. Checks cover both strands, single-base exons, repeated rows, shared exons/genes,
