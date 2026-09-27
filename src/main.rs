@@ -291,6 +291,20 @@ fn audit(args: &Args, dir: &Path) -> Result<bool> {
             "FILTER=. is accepted even though site filters were not reported as passed.".into(),
         );
     }
+    let unassessed = record_states
+        .get("filter_not_assessed")
+        .copied()
+        .unwrap_or(0);
+    if unassessed > 0 {
+        let bases = output.counts[State::FilterNotAssessed as usize];
+        let warning = format!(
+            "{unassessed} input records are classified as filter_not_assessed because FILTER=.; {bases} requested bases have this primary reason. Raw HaplotypeCaller variants commonly use this unset filter. They are excluded from callable totals by default. Use --allow-unfiltered only if you intend to accept records without passing site filters; depth and GQ requirements still apply."
+        );
+        if !args.quiet {
+            eprintln!("Warning: {warning}");
+        }
+        warnings.push(warning);
+    }
     if record_states
         .get("reference_mismatch")
         .copied()
