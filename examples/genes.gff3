@@ -1,0 +1,11 @@
+##gff-version 3
+##sequence-region demo 1 1000
+demo	example	gene	1	650	.	+	.	ID=EXAMPLE_A
+demo	example	mRNA	1	650	.	+	.	ID=EXAMPLE_A_transcript;Parent=EXAMPLE_A
+demo	example	exon	1	150	.	+	.	ID=EXAMPLE_A_exon_1;Parent=EXAMPLE_A_transcript
+demo	example	exon	101	250	.	+	.	ID=EXAMPLE_A_exon_2;Parent=EXAMPLE_A_transcript
+demo	example	exon	401	650	.	+	.	ID=EXAMPLE_A_exon_3;Parent=EXAMPLE_A_transcript
+demo	example	gene	701	950	.	+	.	ID=EXAMPLE_B
+demo	example	mRNA	701	950	.	+	.	ID=EXAMPLE_B_transcript;Parent=EXAMPLE_B
+demo	example	exon	701	850	.	+	.	ID=EXAMPLE_B_exon_1;Parent=EXAMPLE_B_transcript
+demo	example	exon	801	950	.	+	.	ID=EXAMPLE_B_exon_2;Parent=EXAMPLE_B_transcript

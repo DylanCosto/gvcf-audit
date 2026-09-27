@@ -1,0 +1,5 @@
+demo	example	exon	1	150	.	+	.	gene_id "EXAMPLE_A"; transcript_id "EXAMPLE_A_transcript"; exon_id "EXAMPLE_A_exon_1";
+demo	example	exon	101	250	.	+	.	gene_id "EXAMPLE_A"; transcript_id "EXAMPLE_A_transcript"; exon_id "EXAMPLE_A_exon_2";
+demo	example	exon	401	650	.	+	.	gene_id "EXAMPLE_A"; transcript_id "EXAMPLE_A_transcript"; exon_id "EXAMPLE_A_exon_3";
+demo	example	exon	701	850	.	+	.	gene_id "EXAMPLE_B"; transcript_id "EXAMPLE_B_transcript"; exon_id "EXAMPLE_B_exon_1";
+demo	example	exon	801	950	.	+	.	gene_id "EXAMPLE_B"; transcript_id "EXAMPLE_B_transcript"; exon_id "EXAMPLE_B_exon_2";

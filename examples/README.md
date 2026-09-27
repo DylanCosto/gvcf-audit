@@ -31,3 +31,13 @@ The explicit policy override keeps the changed GQ threshold visible in the repor
 The comparison loses 200 callable bases when minimum GQ rises from 20 to 40. This is the expected
 effect of stricter requirements, not evidence that the underlying sequence changed. All saved example
 reports use shortened input paths for sharing; counts, input sizes, timestamps and quality rules are unchanged.
+
+To create targets from the included annotation examples:
+
+```sh
+gvcf-audit targets --annotation examples/genes.gtf --out gtf-targets.tsv
+gvcf-audit targets --annotation examples/genes.gff3 --out gff-targets.tsv
+```
+
+Both produce identical targets. Their exon IDs include the gene name so that the GFF3 IDs are unique
+across the file; their coordinates match `gene-targets.tsv`. Pass either output to `--gene-targets`.
