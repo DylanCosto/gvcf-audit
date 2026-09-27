@@ -1,0 +1,14 @@
+{
+  "method": "Independent per-base byte mask from raw CDS rows, without interval merging or binary searches",
+  "scope": "All autosomal RefSeq CDS bases",
+  "bases_by_state": {
+    "callable_reference": 32322960,
+    "callable_variant": 21536,
+    "low_depth": 432300,
+    "no_call": 24536,
+    "low_gq": 27224,
+    "complex_variant": 4151,
+    "overlapping_records": 419
+  },
+  "match": true
+}
