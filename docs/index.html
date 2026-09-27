@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gvcf-audit · Example reports</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#17313c;background:#f4f7f8;line-height:1.6}body{margin:0}main{max-width:850px;margin:auto;padding:48px 24px}header{border-top:5px solid #176c61;padding-top:24px}h1{font-size:36px;line-height:1.2}h2{font-size:22px}section{background:white;border:1px solid #dce6e8;border-radius:12px;padding:24px;margin:24px 0}a{color:#156c62}strong{font-weight:650}.muted{color:#516b74}li{margin:8px 0}.button{display:inline-block;padding:10px 18px;background:#176c61;color:white;border-radius:6px;text-decoration:none}footer{font-size:14px;margin-top:32px}
+</style><main><header><p class="muted">gvcf-audit 0.4.0 · Fictional example data</p>
+<h1>No variant reported.<br>Enough evidence to tell?</h1>
+<p>A gVCF can report a confident reference genotype, a variant genotype, or insufficient evidence.
+gvcf-audit checks the recorded evidence against your quality requirements and shows which positions remain unresolved.</p>
+<p>These are actual tool outputs generated from the small fictional dataset in the repository. They do not describe a real person's genome.</p></header>
+<section><h2>1. Explore an audit</h2><p>The supplied gene targets cover <strong>750 unique bases</strong>.
+Of those, <strong>450 (60%) meet the requirements</strong>. The other 300 have low depth, missing genotypes, missing records or ambiguous reference bases.</p>
+<p>Open the report to see the reasons, search the two example genes and inspect the recorded genotype fields.</p>
+<a class="button" href="demo/audit/report.html">Open audit report</a></section>
+<section><h2>2. Compare stricter requirements</h2><p>The second audit uses the same input and targets, but raises minimum genotype quality from 20 to 40.
+<strong>200 bases lose callability</strong>; 250 remain callable. The underlying data has not changed.</p>
+<p>The comparison shows exactly which positions and gene/exon summaries changed.</p>
+<a class="button" href="demo/comparison/report.html">Open comparison report</a>
+<p><a href="demo/stricter/report.html">View the stricter audit</a></p></section>
+<p><strong>Callable does not mean proven correct.</strong> This checks evidence reported in the gVCF.
+It cannot reconstruct missed variants or establish biological accuracy. The reference FASTA checks reference agreement, not which variants should exist in the sample.</p>
+<footer><a href="https://github.com/DylanCosto/gvcf-audit">Source and instructions</a> ·
+<a href="https://github.com/DylanCosto/gvcf-audit/releases/tag/v0.4.0">Download 0.4.0</a>
+<p>Reports also work offline. Download and unpack example-reports.zip from the release, then open index.html.</p></footer></main></html>

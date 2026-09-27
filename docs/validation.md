@@ -1,4 +1,32 @@
-# Validation for 0.3.0
+# Validation for 0.4.0
+
+The audit command's 79 existing controlled checks and 25 release checks still pass. The new comparison
+passed 59 checks, including 30 randomized comparisons against independent per-base calculations, plus
+nine compatibility/export checks. These cover reversed contig order, repeated and overlapping groups,
+equal totals hiding changed positions, missing/invalid BEDs, inconsistent counts, sample/reference/policy
+guards, failed quality gates, empty callable/unresolved files, legacy 0.2.0 reports and BED4 output.
+Validation programs remain outside the repository; no regression-test files were added.
+
+The real comparison used the previous NA12878 GATK audit with GENCODE v50 basic chr22 exon targets.
+A second complete gVCF scan changed only the minimum GQ from 20 to 30. All 3,690,789 target positions
+were compared independently from the two audit BED partitions, including every group total and every
+state transition. Exactly 7,612 bases lost callability, affecting 756 genes and 2,037 exons; none gained
+callability. Counts for overlapping genes/exons must not be summed. A separate pysam/HTSlib parser
+agreed at all 44,804 sampled bases across 200 exons under the new policy.
+
+The final comparison took 0.68 seconds (0.61 user / 0.06 system CPU) and peaked at 215,612 KiB RSS.
+This was one local cached run including exports, after the original audits had finished. It measures
+the comparison only, not the full gVCF scans, and is not a cross-machine performance guarantee.
+No original gVCF or reference was read by the comparison command. Reference identity remains an
+explicit limitation because audits have metadata, not sequence checksums.
+
+Release builds passed on Rust 1.88.0 and 1.98.0; their controlled comparison outputs match byte for byte.
+46 comparison reports passed the new JSON schema. Browser checks covered search, sort, pagination and
+empty results on the real 1,747-gene/15,130-exon report, with no logged JavaScript errors.
+[Machine-readable results](comparison-validation.json) record the exact scope and limitations.
+These checks establish calculation consistency, not biological accuracy or every caller/version's behavior.
+
+## Validation for 0.3.0
 
 The new diagnostics and gene/exon summaries were checked on Linux x86-64. No changes to the
 callability policy were intended. The previous callability policy is retained.

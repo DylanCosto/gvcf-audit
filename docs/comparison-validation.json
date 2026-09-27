@@ -1,0 +1,43 @@
+{
+  "sample": "NA12878",
+  "annotation": "GENCODE v50 basic chr22",
+  "before_min_gq": 20,
+  "after_min_gq": 30,
+  "requested_bases": 3690789,
+  "gained_callable_bases": 0,
+  "lost_callable_bases": 7612,
+  "all_changed_bases_checked": 7612,
+  "genes_checked": 1747,
+  "exons_checked": 15130,
+  "genes_with_losses": 756,
+  "exons_with_losses": 2037,
+  "all_groups_and_transitions_match_independent_per_base_calculation": true,
+  "htslib_sampled_exons": 200,
+  "htslib_sampled_bases": 44804,
+  "htslib_sampled_after_states_all_match": true,
+  "wall_seconds": 0.68,
+  "user_seconds": 0.61,
+  "system_seconds": 0.06,
+  "peak_rss_kib": 215612,
+  "limits": "One local comparison of identical targets in one public GATK sample. GQ policy intentionally differs; this is not evidence of changed biological accuracy. All positional differences checked against source audit BEDs; independent genotype parsing sampled.",
+  "final_bed4_export_verified": true,
+  "controlled_checks": 59,
+  "extra_compatibility_checks": 9,
+  "existing_audit_checks": 79,
+  "existing_release_checks": 25,
+  "schema_reports_validated": 46,
+  "rust_versions_built": [
+    "1.88.0",
+    "1.98.0"
+  ],
+  "browser_controls_checked": [
+    "gene and exon search",
+    "sort by losses and net gain",
+    "pagination",
+    "page reset after search",
+    "empty results",
+    "no logged JavaScript errors"
+  ],
+  "tests_added_to_repository": false,
+  "published": false
+}
