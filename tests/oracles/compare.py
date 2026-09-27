@@ -5,7 +5,7 @@ import shutil
 import subprocess
 from collections import Counter, defaultdict
 
-from support import workspace
+from support import random_seed, workspace
 
 repo, study, exe, temporary = workspace()
 cases = study / "cases"
@@ -23,7 +23,8 @@ ref = cases / "reference.fa"
 ref.write_text(">chr1\n" + "A" * 100 + "\n>chr2\n" + "A" * 80 + "\n")
 ref.with_suffix(".fa.fai").write_text("chr1\t100\t6\t100\t101\nchr2\t80\t113\t80\t81\n")
 header = '##fileformat=VCFv4.2\n##source=DeepVariant\n##contig=<ID=chr1,length=100>\n##contig=<ID=chr2,length=80>\n##FORMAT=<ID=GT,Number=1,Type=String,Description="GT">\n##FORMAT=<ID=DP,Number=1,Type=Integer,Description="DP">\n##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="GQ">\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tS\n'
-rng = random.Random(40521)
+seed = random_seed(40521)
+rng = random.Random(seed)
 
 
 def audit(name, quality, targets, reverse=False, extra=()):
@@ -301,7 +302,7 @@ assert not list(cases.glob(".gvcf-audit-*"))
 report = {
     "checks_passed": len(results),
     "random_per_base_comparisons": 30,
-    "seed": 40521,
+    "seed": seed,
     "checks": results,
 }
 (study / "controlled-results.json").write_text(json.dumps(report, indent=2) + "\n")

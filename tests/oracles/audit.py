@@ -3,7 +3,7 @@ import json
 import random
 import subprocess
 
-from support import workspace
+from support import random_seed, workspace
 
 repo, study, exe, temporary = workspace()
 run_dir = study / "cases"
@@ -98,7 +98,8 @@ def record(
 
 
 # Independent per-base oracle for interval logic, quality precedence and overlapping BED rows.
-rng = random.Random(892)
+seed = random_seed(892)
+rng = random.Random(seed)
 for case in range(45):
     rows = []
     oracle = {c: [[] for _ in seq] for c, seq in seqs.items()}

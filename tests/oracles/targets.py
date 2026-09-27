@@ -3,7 +3,7 @@ import json
 import random
 import subprocess
 
-from support import workspace
+from support import random_seed, workspace
 
 repo, study, exe, temporary = workspace()
 cases = study / "cases"
@@ -307,7 +307,8 @@ run(
     extra=["--gene", "H"],
 )
 # Generate equivalent GTF and GFF3 representations from a separate interval model.
-rng = random.Random(5021)
+seed = random_seed(5021)
+rng = random.Random(seed)
 for trial in range(30):
     expected = []
     gtf = []

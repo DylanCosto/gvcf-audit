@@ -1,8 +1,15 @@
 """Shared setup for the portable, standard-library-only checks."""
 
+import os
 import sys
 import tempfile
 from pathlib import Path
+
+
+def random_seed(default):
+    seed = int(os.environ.get("GVCF_AUDIT_SEED", default))
+    print(f"{Path(sys.argv[0]).stem} seed: {seed}", flush=True)
+    return seed
 
 
 def workspace():

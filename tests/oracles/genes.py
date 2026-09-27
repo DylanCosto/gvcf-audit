@@ -6,7 +6,7 @@ import random
 import subprocess
 from pathlib import Path
 
-from support import workspace
+from support import random_seed, workspace
 
 repo, study, exe, temporary = workspace()
 results = []
@@ -171,7 +171,8 @@ assert (
     == 1
 )
 run("bad-example-limit", ["--max-examples", "101"], 1)
-rng = random.Random(71942)
+seed = random_seed(71942)
+rng = random.Random(seed)
 for n in range(45):
     targets = []
     for i in range(rng.randint(3, 35)):
@@ -275,7 +276,7 @@ summary = {
     "checks": results,
     "random_gene_union_comparisons": 45,
     "hand_calculated_base_labels_match": True,
-    "seed": 71942,
+    "seed": seed,
 }
 (study / "results.json").write_text(json.dumps(summary, indent=2) + "\n")
 print(json.dumps({k: v for k, v in summary.items() if k != "checks"}, indent=2))
