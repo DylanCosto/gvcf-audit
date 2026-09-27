@@ -1,0 +1,6 @@
+contig	gene	exon	intervals	bases	callable_bases	unresolved_bases	callable_percent	main_reason	callable_reference	callable_variant	no_record	no_call	partial_no_call	site_filtered	genotype_filtered	quality_missing	low_depth	low_gq	unsupported_ploidy	unsupported_allele	complex_variant	overlapping_records	reference_mismatch	reference_ambiguous	filter_not_assessed
+demo	EXAMPLE_A	exon_1	0-150	150	150	0	100.0000	.	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+demo	EXAMPLE_A	exon_2	100-250	150	150	0	100.0000	.	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+demo	EXAMPLE_A	exon_3	400-650	250	0	250	0.0000	low_depth	0	0	0	50	0	0	0	0	180	0	0	0	0	0	0	20	0
+demo	EXAMPLE_B	exon_1	700-850	150	0	150	0.0000	low_gq	0	0	0	0	0	0	0	0	0	150	0	0	0	0	0	0	0
+demo	EXAMPLE_B	exon_2	800-950	150	0	150	0.0000	low_gq	0	0	50	0	0	0	0	0	0	100	0	0	0	0	0	0	0

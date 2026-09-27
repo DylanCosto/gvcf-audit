@@ -1,0 +1,6 @@
+contig	start	end	name	bases	callable_bases	callable_percent	callable_reference	callable_variant	no_record	no_call	partial_no_call	site_filtered	genotype_filtered	quality_missing	low_depth	low_gq	unsupported_ploidy	unsupported_allele	complex_variant	overlapping_records	reference_mismatch	reference_ambiguous	filter_not_assessed
+demo	0	150	EXAMPLE_A/exon_1	150	150	100.0000	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+demo	100	250	EXAMPLE_A/exon_2	150	150	100.0000	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+demo	400	650	EXAMPLE_A/exon_3	250	0	0.0000	0	0	0	50	0	0	0	0	180	0	0	0	0	0	0	20	0
+demo	700	850	EXAMPLE_B/exon_1	150	0	0.0000	0	0	0	0	0	0	0	0	0	150	0	0	0	0	0	0	0
+demo	800	950	EXAMPLE_B/exon_2	150	0	0.0000	0	0	50	0	0	0	0	0	0	100	0	0	0	0	0	0	0

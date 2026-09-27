@@ -1,0 +1,3 @@
+contig	gene	targeted_exons	unresolved_exons	bases	callable_bases	unresolved_bases	callable_percent	main_reason	callable_reference	callable_variant	no_record	no_call	partial_no_call	site_filtered	genotype_filtered	quality_missing	low_depth	low_gq	unsupported_ploidy	unsupported_allele	complex_variant	overlapping_records	reference_mismatch	reference_ambiguous	filter_not_assessed
+demo	EXAMPLE_A	3	1	500	250	250	50.0000	low_depth	250	0	0	50	0	0	0	0	180	0	0	0	0	0	0	20	0
+demo	EXAMPLE_B	2	2	250	0	250	0.0000	low_gq	0	0	50	0	0	0	0	0	0	200	0	0	0	0	0	0	0
