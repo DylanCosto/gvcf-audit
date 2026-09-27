@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>gvcf-audit comparison</title><style>
+body{font:16px/1.55 system-ui,sans-serif;color:#172b38;background:#f4f7f8;margin:0}main{max-width:1120px;margin:auto;padding:36px 24px}h1{font-size:34px;margin-bottom:4px}h2{margin-top:0}section{background:white;border:1px solid #d7e1e5;border-radius:10px;padding:22px;margin:22px 0;overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,td{padding:9px;text-align:right;border-bottom:1px solid #e4e9ec}th:first-child,td:first-child{text-align:left;overflow-wrap:anywhere}input,select,button{font:inherit;padding:7px;border:1px solid #bccbd2;border-radius:5px}input,select{margin:0 12px 14px 0}button{cursor:pointer;background:#fff}button:disabled{opacity:.4;cursor:default}a{color:#146b83}.muted{color:#536975}.cards{display:flex;gap:24px;flex-wrap:wrap}.cards strong{font-size:28px;display:block}.notice{background:#fff9e9;border-color:#e4d59e}.path{overflow-wrap:anywhere}</style>
+<main><p class="muted">gvcf-audit · comparison</p><h1>Example → Example</h1><p>Changes in reported genotype evidence on identical target intervals.</p><section><div class="cards"><div><strong>0</strong>bases gained callability</div><div><strong>200</strong>bases lost callability</div><div><strong>-200</strong>net change</div></div><p>Before: 60.00% callable · After: 33.33% callable · 750 requested bases</p><p class="muted">Gained and lost count actual positions, even when the net change is zero. Changes between two callable states do not count as gains or losses. Gene/exon targets can overlap, so their totals must not be added together.</p></section>
+<section class="notice"><h2>Comparison conditions</h2><ul><li>Reference sequence identity was not verified: reports contain paths, sizes and modification times, not sequence checksums.</li><li>Rules changed: min_gq: 20.0 → 40.0. These results include the effect of those changes.</li></ul><p>These changes describe the caller's reported evidence, not a change in biological accuracy.</p></section><section><h2>Genes</h2><label>Search <input id="genes-search" type="search" placeholder="Gene, exon or contig"></label> <label>Sort <select id="genes-sort"><option value="lost_callable_bases">Most bases lost</option><option value="gained_callable_bases">Most bases gained</option><option value="net_callable_bases">Largest net gain</option></select></label><table><thead><tr><th>Gene / exon</th><th>Contig</th><th>Before</th><th>After</th><th>Gained</th><th>Lost</th><th>Net change</th></tr></thead><tbody id="genes-rows"></tbody></table><p><span id="genes-count"></span> <button id="genes-prev">Previous</button> <button id="genes-next">Next</button></p><a href="genes.tsv">Download genes TSV</a></section><section><h2>Exons</h2><label>Search <input id="exons-search" type="search" placeholder="Gene, exon or contig"></label> <label>Sort <select id="exons-sort"><option value="lost_callable_bases">Most bases lost</option><option value="gained_callable_bases">Most bases gained</option><option value="net_callable_bases">Largest net gain</option></select></label><table><thead><tr><th>Gene / exon</th><th>Contig</th><th>Before</th><th>After</th><th>Gained</th><th>Lost</th><th>Net change</th></tr></thead><tbody id="exons-rows"></tbody></table><p><span id="exons-count"></span> <button id="exons-prev">Previous</button> <button id="exons-next">Next</button></p><a href="exons.tsv">Download exons TSV</a></section>
+<section><h2>Reasons before and after</h2><table><thead><tr><th>State</th><th>Before bases</th><th>After bases</th><th>Net change</th></tr></thead><tbody><tr><td>callable reference</td><td>449</td><td>250</td><td>-199</td></tr><tr><td>callable variant</td><td>1</td><td>0</td><td>-1</td></tr><tr><td>no record</td><td>50</td><td>50</td><td>0</td></tr><tr><td>no call</td><td>50</td><td>50</td><td>0</td></tr><tr><td>partial no call</td><td>0</td><td>0</td><td>0</td></tr><tr><td>site filtered</td><td>0</td><td>0</td><td>0</td></tr><tr><td>genotype filtered</td><td>0</td><td>0</td><td>0</td></tr><tr><td>quality missing</td><td>0</td><td>0</td><td>0</td></tr><tr><td>low depth</td><td>180</td><td>180</td><td>0</td></tr><tr><td>low gq</td><td>0</td><td>200</td><td>200</td></tr><tr><td>unsupported ploidy</td><td>0</td><td>0</td><td>0</td></tr><tr><td>unsupported allele</td><td>0</td><td>0</td><td>0</td></tr><tr><td>complex variant</td><td>0</td><td>0</td><td>0</td></tr><tr><td>overlapping records</td><td>0</td><td>0</td><td>0</td></tr><tr><td>reference mismatch</td><td>0</td><td>0</td><td>0</td></tr><tr><td>reference ambiguous</td><td>20</td><td>20</td><td>0</td></tr><tr><td>filter not assessed</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>Reason totals can cancel across positions. The changed intervals and transition counts preserve those differences.</p></section>
+<section><h2>Files and provenance</h2><p><a href="changes.bed">Changed intervals</a> · <a href="comparison.json">Full comparison JSON</a></p><p class="path">Before: docs/demo/audit</p><p class="path">After: docs/demo/stricter</p><p class="muted">BED coordinates are 0-based, half-open. No gVCF or FASTA was rescanned. Keep these files together. This report works offline.</p><noscript>Enable JavaScript to explore genes and exons, or use the TSV downloads.</noscript></section></main><script id="comparison-data" type="application/json">{"exons":[{"after_callable_fraction":1.0,"before_callable_fraction":1.0,"contig":"demo","exon":"exon_1","gained_callable_bases":0,"gene":"EXAMPLE_A","lost_callable_bases":0,"net_callable_bases":0},{"after_callable_fraction":1.0,"before_callable_fraction":1.0,"contig":"demo","exon":"exon_2","gained_callable_bases":0,"gene":"EXAMPLE_A","lost_callable_bases":0,"net_callable_bases":0},{"after_callable_fraction":0.0,"before_callable_fraction":0.0,"contig":"demo","exon":"exon_3","gained_callable_bases":0,"gene":"EXAMPLE_A","lost_callable_bases":0,"net_callable_bases":0},{"after_callable_fraction":0.0,"before_callable_fraction":1.0,"contig":"demo","exon":"exon_1","gained_callable_bases":0,"gene":"EXAMPLE_B","lost_callable_bases":150,"net_callable_bases":-150},{"after_callable_fraction":0.0,"before_callable_fraction":0.6666666666666666,"contig":"demo","exon":"exon_2","gained_callable_bases":0,"gene":"EXAMPLE_B","lost_callable_bases":100,"net_callable_bases":-100}],"genes":[{"after_callable_fraction":0.5,"before_callable_fraction":0.5,"contig":"demo","exon":null,"gained_callable_bases":0,"gene":"EXAMPLE_A","lost_callable_bases":0,"net_callable_bases":0},{"after_callable_fraction":0.0,"before_callable_fraction":0.8,"contig":"demo","exon":null,"gained_callable_bases":0,"gene":"EXAMPLE_B","lost_callable_bases":200,"net_callable_bases":-200}]}</script><script>const data = JSON.parse(document.getElementById('comparison-data').textContent);
+for (const kind of ['genes', 'exons']) {
+  const search = document.getElementById(`${kind}-search`);
+  const sort = document.getElementById(`${kind}-sort`);
+  const body = document.getElementById(`${kind}-rows`);
+  const previous = document.getElementById(`${kind}-prev`);
+  const next = document.getElementById(`${kind}-next`);
+  let selected = [];
+  let page = 0;
+  const pageSize = 50;
+  function render() {
+    body.replaceChildren();
+    const first = page * pageSize;
+    for (const row of selected.slice(first, first + pageSize)) {
+      const tr = document.createElement('tr');
+      const cells = [row.exon ? `${row.gene} / ${row.exon}` : row.gene, row.contig,
+        `${(100 * row.before_callable_fraction).toFixed(2)}%`,
+        `${(100 * row.after_callable_fraction).toFixed(2)}%`,
+        row.gained_callable_bases, row.lost_callable_bases, row.net_callable_bases];
+      for (const value of cells) {
+        const td = document.createElement('td');
+        td.textContent = value;
+        tr.append(td);
+      }
+      body.append(tr);
+    }
+    document.getElementById(`${kind}-count`).textContent = selected.length
+      ? `${first + 1}–${Math.min(first + pageSize, selected.length)} of ${selected.length} ${kind}.`
+      : data[kind].length ? `No matching ${kind}.`
+      : `No ${kind} summaries. Create both audits with --gene-targets to compare them.`;
+    previous.disabled = page === 0;
+    next.disabled = first + pageSize >= selected.length;
+  }
+  function update() {
+    const query = search.value.toLowerCase().trim();
+    selected = data[kind].filter(row => `${row.gene} ${row.exon ?? ''} ${row.contig}`.toLowerCase().includes(query));
+    selected.sort((a, b) => b[sort.value] - a[sort.value]);
+    page = 0;
+    render();
+  }
+  search.addEventListener('input', update);
+  sort.addEventListener('change', update);
+  previous.addEventListener('click', () => { page--; render(); });
+  next.addEventListener('click', () => { page++; render(); });
+  update();
+}
+</script></html>

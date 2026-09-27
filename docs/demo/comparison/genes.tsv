@@ -1,0 +1,3 @@
+contig	gene	bases	before_callable_bases	after_callable_bases	gained_callable_bases	lost_callable_bases	net_callable_bases	before_callable_percent	after_callable_percent	callable_percentage_point_change
+demo	EXAMPLE_A	500	250	250	0	0	0	50.0000	50.0000	0.0000
+demo	EXAMPLE_B	250	200	0	0	200	-200	80.0000	0.0000	-80.0000
