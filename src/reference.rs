@@ -209,6 +209,24 @@ impl Reference {
         Ok(true)
     }
 
+    pub fn first_mismatch(
+        &self,
+        id: usize,
+        start: u64,
+        text: &str,
+    ) -> Result<Option<(u64, char, char)>> {
+        let c = &self.contigs[id];
+        let data = self.mapped(id)?;
+        for (i, b) in text.bytes().enumerate() {
+            let p = start + i as u64;
+            let actual = data[(p / c.bases * c.width + p % c.bases) as usize];
+            if !actual.eq_ignore_ascii_case(&b) {
+                return Ok(Some((p, b as char, actual as char)));
+            }
+        }
+        Ok(None)
+    }
+
     pub fn ambiguous_runs(&self, id: usize) -> Result<Vec<(u64, u64)>> {
         let c = &self.contigs[id];
         let data = self.mapped(id)?;

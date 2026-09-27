@@ -1,4 +1,6 @@
-use crate::{Result, STATES, State, fail, reader, reference::Reference};
+use crate::{
+    Result, STATES, State, diagnostics::Diagnostics, fail, genes, reader, reference::Reference,
+};
 use serde::Serialize;
 use std::{
     cmp::Reverse,
@@ -14,6 +16,8 @@ pub struct Region {
     pub start: u64,
     pub end: u64,
     pub name: String,
+    pub gene: Option<String>,
+    pub exon: Option<String>,
     pub bases_by_state: [u64; STATES.len()],
 }
 
@@ -21,17 +25,27 @@ pub struct Scope {
     pub regions: Vec<Region>,
     pub by_contig: Vec<Vec<usize>>,
     pub union: Vec<Vec<(u64, u64)>>,
+    pub groups: Vec<genes::Group>,
+    pub group_intervals: Vec<Vec<(u64, u64, usize)>>,
 }
 
 impl Scope {
-    pub fn load(bed: Option<&Path>, reference: &Reference) -> Result<Self> {
+    pub fn load(
+        bed: Option<&Path>,
+        gene_targets: Option<&Path>,
+        reference: &Reference,
+    ) -> Result<Self> {
         let n = reference.contigs.len();
         let mut out = Self {
             regions: Vec::new(),
             by_contig: vec![Vec::new(); n],
             union: vec![Vec::new(); n],
+            groups: Vec::new(),
+            group_intervals: vec![Vec::new(); n],
         };
-        if let Some(path) = bed {
+        if let Some(path) = gene_targets {
+            genes::load(path, &mut out, reference)?;
+        } else if let Some(path) = bed {
             for (line_no, line) in reader(path)?.lines().enumerate() {
                 let line = line?;
                 if line.trim().is_empty()
@@ -86,19 +100,29 @@ impl Scope {
         Ok(out)
     }
 
-    fn add(&mut self, id: usize, contig: String, start: u64, end: u64, name: String) {
+    pub fn add(&mut self, id: usize, contig: String, start: u64, end: u64, name: String) -> usize {
+        let index = self.regions.len();
         self.by_contig[id].push(self.regions.len());
         self.regions.push(Region {
             contig,
             start,
             end,
             name,
+            gene: None,
+            exon: None,
             bases_by_state: [0; STATES.len()],
         });
+        index
     }
 
     pub fn bases(&self) -> u64 {
         self.union.iter().flatten().map(|(s, e)| e - s).sum()
+    }
+
+    pub fn overlaps(&self, contig: usize, start: u64, end: u64) -> bool {
+        let intervals = &self.union[contig];
+        let i = intervals.partition_point(|&(_, e)| e <= start);
+        intervals.get(i).is_some_and(|&(s, _)| s < end)
     }
 }
 
@@ -144,16 +168,18 @@ pub struct Output {
     pub scope: Scope,
     pub counts: [u64; STATES.len()],
     pub contig_counts: Vec<[u64; STATES.len()]>,
+    pub diagnostics: Diagnostics,
     callable: BedSink,
     unresolved: BedSink,
 }
 
 impl Output {
-    pub fn new(scope: Scope, dir: &Path) -> Result<Self> {
+    pub fn new(scope: Scope, dir: &Path, max_examples: usize) -> Result<Self> {
         Ok(Self {
             contig_counts: vec![[0; STATES.len()]; scope.union.len()],
             scope,
             counts: [0; STATES.len()],
+            diagnostics: Diagnostics::new(max_examples),
             callable: BedSink::new(&dir.join("callable.bed"))?,
             unresolved: BedSink::new(&dir.join("unresolved.bed"))?,
         })
@@ -194,6 +220,9 @@ impl Output {
             writeln!(f)?;
         }
         f.flush()?;
+        if !self.scope.groups.is_empty() {
+            genes::write(dir, &self.scope.groups)?;
+        }
         Ok(())
     }
 }
@@ -207,6 +236,9 @@ pub struct Emitter {
     regions: Vec<usize>,
     next_region: usize,
     active_regions: Vec<usize>,
+    groups: Vec<(u64, u64, usize)>,
+    next_group: usize,
+    active_groups: Vec<(u64, u64, usize)>,
 }
 
 impl Emitter {
@@ -226,6 +258,9 @@ impl Emitter {
             regions: output.scope.by_contig[contig].clone(),
             next_region: 0,
             active_regions: Vec::new(),
+            groups: output.scope.group_intervals[contig].clone(),
+            next_group: 0,
+            active_groups: Vec::new(),
         })
     }
 
@@ -275,7 +310,16 @@ impl Emitter {
             let r = &mut out.scope.regions[i];
             r.bases_by_state[state as usize] += r.end.min(end) - r.start.max(start);
         }
+        while self.next_group < self.groups.len() && self.groups[self.next_group].0 < end {
+            self.active_groups.push(self.groups[self.next_group]);
+            self.next_group += 1;
+        }
+        self.active_groups.retain(|&(_, e, _)| e > start);
+        for &(s, e, i) in &self.active_groups {
+            out.scope.groups[i].bases_by_state[state as usize] += e.min(end) - s.max(start);
+        }
         let name = &out.scope.regions[out.scope.by_contig[self.contig][0]].contig;
+        out.diagnostics.interval(name, start, end, state);
         if state.callable() {
             out.callable.push(name, start, end, state)?;
         } else {

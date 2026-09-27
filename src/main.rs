@@ -1,3 +1,5 @@
+mod diagnostics;
+mod genes;
 mod intervals;
 mod reference;
 mod report;
@@ -25,7 +27,7 @@ fn fail<T>(message: impl Into<String>) -> Result<T> {
 #[command(
     version,
     about = "Explain callability and missing evidence in a gVCF",
-    after_help = "Outputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe initial version scans the entire input, even with --bed; compressed FASTA and BCF are not supported."
+    after_help = "Outputs: callable.bed, unresolved.bed, regions.tsv, report.json and report.html; --gene-targets adds genes.tsv and exons.tsv.\nCallability is a quality policy for small-variant genotype evidence, not a guarantee of variant detection.\nThe audit scans the entire input, even with selected targets; compressed FASTA and BCF are not supported."
 )]
 pub struct Args {
     /// gVCF or VCF, plain text, gzip or BGZF
@@ -34,9 +36,12 @@ pub struct Args {
     /// Uncompressed FASTA with matching .fai
     #[arg(long)]
     reference: PathBuf,
-    /// Optional 0-based, half-open BED; the audit otherwise covers every FASTA contig
+    /// Optional 0-based, half-open BED; without targets, covers every FASTA contig
     #[arg(long)]
     bed: Option<PathBuf>,
+    /// Annotated targets TSV: contig, start, end, gene, exon (header required; replaces --bed)
+    #[arg(long, conflicts_with = "bed")]
+    gene_targets: Option<PathBuf>,
     /// A new output directory (existing directories are never overwritten)
     #[arg(long)]
     out: PathBuf,
@@ -64,6 +69,12 @@ pub struct Args {
     /// Exit with status 2 if requested reference-mismatch bases exceed this limit
     #[arg(long)]
     max_reference_mismatch_bases: Option<u64>,
+    /// Maximum mismatching records overlapping the scope, including masked or overlapping records
+    #[arg(long)]
+    max_reference_mismatch_records: Option<u64>,
+    /// Maximum examples per reason and example type; 0 disables examples
+    #[arg(long, default_value_t = 5, value_parser = clap::value_parser!(u32).range(0..=100))]
+    max_examples: u32,
     /// Suppress progress and completion messages (errors are still printed)
     #[arg(long)]
     quiet: bool,
@@ -157,8 +168,12 @@ pub fn reader(path: &Path) -> Result<Box<dyn BufRead>> {
 fn audit(args: &Args, dir: &Path) -> Result<bool> {
     let begin = Instant::now();
     let reference = Reference::open(&args.reference)?;
-    let scope = Scope::load(args.bed.as_deref(), &reference)?;
-    let mut output = Output::new(scope, dir)?;
+    let scope = Scope::load(
+        args.bed.as_deref(),
+        args.gene_targets.as_deref(),
+        &reference,
+    )?;
+    let mut output = Output::new(scope, dir, args.max_examples as usize)?;
     let mut input = reader(&args.gvcf)?;
     let mut h = vcf::Header::default();
     let mut line = String::new();
@@ -193,6 +208,9 @@ fn audit(args: &Args, dir: &Path) -> Result<bool> {
         }
         let r = vcf::parse(s, &h, args, &reference, &mut adaptations)
             .map_err(|e| format!("Line {line_no}: {e}"))?;
+        if output.diagnostics.needs_record(&r) && output.scope.overlaps(r.contig, r.start, r.end) {
+            output.diagnostics.record(&r, line_no, args, &reference)?;
+        }
         if sweep.as_ref().is_none_or(|sw| sw.contig != r.contig) {
             if let Some(mut previous) = sweep.take() {
                 previous.advance(reference.contigs[previous.contig].length, &mut output)?;
@@ -246,7 +264,7 @@ fn audit(args: &Args, dir: &Path) -> Result<bool> {
     if !h.unmapped_header_contigs.is_empty() {
         warnings.push(format!("{} header contigs are absent from the reference and have no records. They were not audited; their names are listed in JSON. Every record and requested region must have a matching reference contig.", h.unmapped_header_contigs.len()));
     }
-    if args.bed.is_none() {
+    if args.bed.is_none() && args.gene_targets.is_none() {
         warnings.push("Scope includes every FASTA contig, including contigs absent from the VCF. Use --bed for a selected assay or region set.".into());
     }
     if args.allow_block_dp {

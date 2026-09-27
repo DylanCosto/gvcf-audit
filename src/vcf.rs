@@ -130,6 +130,15 @@ pub struct Record<'a> {
     pub start: u64,
     pub end: u64,
     pub state: State,
+    pub reference: &'a str,
+    pub alternate: &'a str,
+    pub genotype: &'a str,
+    pub filter: &'a str,
+    pub genotype_filter: Option<&'a str>,
+    pub dp: Option<f64>,
+    pub min_dp: Option<f64>,
+    pub gq: Option<f64>,
+    pub block: bool,
 }
 
 fn number(value: Option<&str>, field: &str) -> Result<Option<f64>> {
@@ -333,5 +342,14 @@ pub fn parse<'a>(
         start,
         end,
         state,
+        reference: f[3],
+        alternate: f[4],
+        genotype: gt_text,
+        filter: f[6],
+        genotype_filter: value("FT"),
+        dp,
+        min_dp,
+        gq,
+        block,
     })
 }
