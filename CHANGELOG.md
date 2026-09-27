@@ -1,5 +1,10 @@
 # Changes
 
+## Unreleased
+
+- Add small Rust fixtures, portable synthetic checks and CI on stable Rust and Rust 1.88.
+- Warn in the report and terminal when unset site filters exclude records from callable totals.
+
 ## 0.5.0
 
 - Convert GTF and GFF3 exon annotations into gene targets with the `targets` command.

@@ -58,6 +58,16 @@ reference stretch, a variant and a gap.
 
 The output directory must be new. Open `audit/report.html` in a browser; it works offline.
 
+## Development checks
+
+Run `cargo test --locked` for the small Rust fixture tests. The independent synthetic
+checks run with `python3 tests/oracles/run.py target/debug/gvcf-audit` after
+`cargo build --locked`. They need no downloaded genomes or old release binaries.
+See [tests/README.md](tests/README.md) for coverage and expected-output provenance.
+GitHub Actions runs both suites, clippy, formatting and a Rust 1.88 release build.
+
+## Audit options
+
 - `--gvcf`: text VCF, gzip or BGZF. Multi-sample files require `--sample NAME`.
 - `--reference`: the same uncompressed FASTA used to call the sample, with its `.fai` index.
   Create an index with `samtools faidx reference.fa` if needed.
