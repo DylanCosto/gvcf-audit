@@ -1,6 +1,6 @@
 # Reproducible checks
 
-The repository now includes 12 Rust integration tests and 362 synthetic checks in
+The repository now includes 14 Rust integration tests and 362 synthetic checks in
 Python, using only its standard library. See [the test instructions](../tests/README.md).
 They cover the audit, comparisons, annotation conversion, gene/exon unions, reference
 validation, errors and output protection. CI runs both suites on stable Rust and Rust
@@ -10,6 +10,18 @@ The release notes below describe checks run at the time of each release. Their s
 about external validation scripts describe those historical releases. The latest synthetic
 suites have since been brought into the repository. Full public-genome runs remain separate
 historical evidence; they are not part of CI. Test counts are checks, not a coverage percentage.
+
+## Validation for 0.5.1
+
+The two added Rust cases cover soft-masked reference bases and a deletion followed by
+an overlapping `*` spanning-deletion record. All 14 Rust integration tests pass.
+The 362 synthetic checks pass with the existing fixed seeds and fresh seed
+6988092914462208025; replaying that seed also passes on Rust 1.88. A failed suite
+prints its seed and replay command. These checks use only small synthetic data.
+
+Main-branch pushes and pull requests run the fixed suites. A separate weekly job
+runs fresh seeded cases and records the seed in its log. It does not replace the
+fixed suite, and has not yet run on its scheduled trigger at release time.
 
 ## Validation for 0.5.0
 
