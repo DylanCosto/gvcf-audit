@@ -16,7 +16,7 @@ an expected list of variants for the sample.
 [**Explore the example reports**](https://DylanCosto.github.io/gvcf-audit/) without installing anything.
 They use the small, fictional dataset included in this repository.
 
-**Version 0.5.0.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
+**Version 0.5.1.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
 It does not call variants, inspect BAM reads, impute missing genotypes or provide clinical interpretation.
 Use the reported coordinates to investigate the underlying reads in a genome viewer such as IGV.
 

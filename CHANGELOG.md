@@ -1,9 +1,11 @@
 # Changes
 
-## Unreleased
+## 0.5.1
 
 - Add small Rust fixtures, portable synthetic checks and CI on stable Rust and Rust 1.88.
 - Warn in the report and terminal when unset site filters exclude records from callable totals.
+- Cover soft-masked references and spanning deletions, and add weekly checks with replayable random seeds.
+- Run push CI only on main to avoid duplicate pull-request checks.
 
 ## 0.5.0
 
