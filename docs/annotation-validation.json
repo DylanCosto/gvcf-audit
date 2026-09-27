@@ -1,0 +1,73 @@
+{
+  "gencode": {
+    "annotation": "GENCODE v50 basic, GRCh38.p14",
+    "source": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.basic.annotation.gtf.gz",
+    "scope": "chr22",
+    "exon_records": 78148,
+    "unique_targets": 15130,
+    "genes": 1747,
+    "union_bases": 3690789,
+    "all_targets_match_independent_conversion": true,
+    "timing": {
+      "wall": 3.25,
+      "user": 3.19,
+      "system": 0.01,
+      "max_rss_kib": 8864.0
+    }
+  },
+  "ensembl": {
+    "annotation": "Ensembl 115 Saccharomyces cerevisiae R64-1-1",
+    "source": "https://ftp.ensembl.org/pub/release-115/gff3/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.115.gff3.gz",
+    "unique_targets": 7507,
+    "genes": 7127,
+    "contigs": 17,
+    "strand_exon_records": {
+      "+": 3835,
+      "-": 3672
+    },
+    "gene_type_exon_records": {
+      "gene": 6913,
+      "ncRNA_gene": 491,
+      "transposable_element_gene": 91,
+      "pseudogene": 12
+    },
+    "all_targets_match_independent_conversion": true,
+    "timing": {
+      "wall": 0.05,
+      "user": 0.04,
+      "system": 0.0,
+      "max_rss_kib": 19004.0
+    }
+  },
+  "gencode_full": {
+    "exon_records": 3122490,
+    "unique_targets": 679562,
+    "genes": 78733,
+    "contigs": 25,
+    "all_targets_match_independent_conversion": true,
+    "timing": {
+      "wall": 8.35,
+      "user": 8.28,
+      "system": 0.07,
+      "max_rss_kib": 186456.0
+    }
+  },
+  "controlled_checks": 136,
+  "existing_audit_checks": 79,
+  "existing_release_checks": 25,
+  "integration": {
+    "gtf_and_gff3_outputs_identical": true,
+    "converted_targets_match_manual_targets": true,
+    "all_audit_counts_and_bed_tsv_outputs_match_published_v040": true,
+    "existing_comparison_unchanged": true,
+    "concurrent_output_preserved": true
+  },
+  "rust_versions_built": [
+    "1.88.0",
+    "1.98.0"
+  ],
+  "rust_outputs_identical": true,
+  "new_dependencies": false,
+  "tests_added_to_repository": false,
+  "scope": "Version 0.5.0. Exact annotation conversion and example workflow checks, not validation of annotation biological correctness. Timings are single local runs."
+}

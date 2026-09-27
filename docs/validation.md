@@ -1,4 +1,32 @@
-# Validation for 0.4.0
+# Validation for 0.5.0
+
+The annotation converter passed 136 checks, including 30 independent interval models represented in
+both GTF and GFF3. Checks cover both strands, single-base exons, repeated rows, shared exons/genes,
+parents after children, missing exon IDs, percent escapes, quoted GTF attributes and comments,
+malformed links/coordinates, format and gene/contig filters, gzip input and truncated gzip errors.
+Existing destinations and simultaneous output writers cannot overwrite a completed target file.
+Validation programs remain outside the repository; no regression tests were added.
+
+All 679,562 unique targets (78,733 genes, 25 contigs) from the complete GENCODE v50 basic GTF agree
+with an independent conversion of 3,122,490 exon records. The chr22 subset also matches the 15,130
+unique targets used in the prior real-genome audit, retaining its 3,690,789-base union. All 7,507
+Ensembl 115 yeast GFF3 targets (7,127 genes, 17 contigs) agree with independent parent mapping.
+That file exercises missing exon IDs and gene, ncRNA_gene, pseudogene and transposable_element_gene
+parents on both strands. This checks coordinate and grouping consistency, not annotation correctness.
+
+The full human conversion took 8.35 seconds and 186,456 KiB peak RSS. The chr22-filtered
+conversion took 3.25 seconds and 8,864 KiB; the yeast conversion took 0.05 seconds and 19,004 KiB.
+These are single local runs, not cross-machine performance guarantees. Conversion reads the full
+annotation even when filtering; it does not read a genome sequence or gVCF.
+
+The example GTF and GFF3 produce identical TSVs. Running an audit on those converted targets gives
+identical counts and BED/TSV outputs to the published 0.4.0 binary with independently prepared targets.
+The existing comparison example still matches. The 79 existing audit checks and 25 release checks pass.
+Release builds pass on Rust 1.88.0 and 1.98.0 with identical example conversion output.
+
+[Machine-readable results and source URLs](annotation-validation.json) describe the tested scope.
+
+## Validation for 0.4.0
 
 The audit command's 79 existing controlled checks and 25 release checks still pass. The new comparison
 passed 59 checks, including 30 randomized comparisons against independent per-base calculations, plus
