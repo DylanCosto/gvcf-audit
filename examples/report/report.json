@@ -3,15 +3,15 @@
     "reference_blocks_with_unset_site_filter": 3
   },
   "bases_by_state": {
-    "callable_reference": 599,
+    "callable_reference": 449,
     "callable_variant": 1,
     "complex_variant": 0,
     "filter_not_assessed": 0,
     "genotype_filtered": 0,
     "low_depth": 180,
     "low_gq": 0,
-    "no_call": 100,
-    "no_record": 100,
+    "no_call": 50,
+    "no_record": 50,
     "overlapping_records": 0,
     "partial_no_call": 0,
     "quality_missing": 0,
@@ -21,21 +21,21 @@
     "unsupported_allele": 0,
     "unsupported_ploidy": 0
   },
-  "callable_bases": 600,
+  "callable_bases": 450,
   "callable_fraction": 0.6,
   "checksums_computed": false,
   "contigs": [
     {
       "bases_by_state": {
-        "callable_reference": 599,
+        "callable_reference": 449,
         "callable_variant": 1,
         "complex_variant": 0,
         "filter_not_assessed": 0,
         "genotype_filtered": 0,
         "low_depth": 180,
         "low_gq": 0,
-        "no_call": 100,
-        "no_record": 100,
+        "no_call": 50,
+        "no_record": 50,
         "overlapping_records": 0,
         "partial_no_call": 0,
         "quality_missing": 0,
@@ -45,15 +45,352 @@
         "unsupported_allele": 0,
         "unsupported_ploidy": 0
       },
-      "callable_bases": 600,
+      "callable_bases": 450,
       "callable_fraction": 0.6,
       "contig": "demo",
-      "requested_bases": 1000
+      "requested_bases": 750
     }
   ],
-  "coordinates": "0-based half-open; overlapping BED rows are independent, overall totals use their union",
+  "coordinates": "0-based half-open; overlapping input rows are independent, overall totals use their union",
   "definition": "Callable means the input supplies haploid or diploid small-variant genotype evidence passing the stated filters, depth and GQ thresholds. It does not establish absence of every variant type or correctness of the caller. Indel/structural spans and overlapping records are conservatively unresolved.",
-  "elapsed_seconds": 8.6406e-05,
+  "diagnostics": {
+    "interval_examples": [
+      {
+        "contig": "demo",
+        "end": 480,
+        "reason": "low_depth",
+        "start": 400
+      },
+      {
+        "contig": "demo",
+        "end": 500,
+        "reason": "reference_ambiguous",
+        "start": 480
+      },
+      {
+        "contig": "demo",
+        "end": 600,
+        "reason": "low_depth",
+        "start": 500
+      },
+      {
+        "contig": "demo",
+        "end": 650,
+        "reason": "no_call",
+        "start": 600
+      },
+      {
+        "contig": "demo",
+        "end": 950,
+        "reason": "no_record",
+        "start": 900
+      }
+    ],
+    "max_examples_per_reason": 5,
+    "record_examples": [
+      {
+        "contig": "demo",
+        "end": 600,
+        "input_contig": "demo",
+        "line": 11,
+        "observed": {
+          "ALT": "<*>",
+          "DP": null,
+          "FILTER": ".",
+          "FT": null,
+          "GQ": 30.0,
+          "GT": "0/0",
+          "MIN_DP": 4.0,
+          "REF": "A",
+          "depth_field_used": "MIN_DP",
+          "first_reference_mismatch": null,
+          "reference_block": true
+        },
+        "reason": "low_depth",
+        "rule": "MIN_DP must be at least 10.",
+        "start": 400
+      },
+      {
+        "contig": "demo",
+        "end": 700,
+        "input_contig": "demo",
+        "line": 12,
+        "observed": {
+          "ALT": "<*>",
+          "DP": null,
+          "FILTER": ".",
+          "FT": null,
+          "GQ": 0.0,
+          "GT": "./.",
+          "MIN_DP": 0.0,
+          "REF": "A",
+          "depth_field_used": "MIN_DP",
+          "first_reference_mismatch": null,
+          "reference_block": true
+        },
+        "reason": "no_call",
+        "rule": "Every GT allele must be called.",
+        "start": 600
+      }
+    ],
+    "reference_mismatch_records_overlapping_scope": 0
+  },
+  "elapsed_seconds": 0.000405741,
+  "exons": [
+    {
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 150,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 150,
+      "callable_fraction": 1.0,
+      "contig": "demo",
+      "exon": "exon_1",
+      "gene": "EXAMPLE_A",
+      "intervals": [
+        [
+          0,
+          150
+        ]
+      ],
+      "main_reason": null,
+      "unresolved_bases": 0
+    },
+    {
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 150,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 150,
+      "callable_fraction": 1.0,
+      "contig": "demo",
+      "exon": "exon_2",
+      "gene": "EXAMPLE_A",
+      "intervals": [
+        [
+          100,
+          250
+        ]
+      ],
+      "main_reason": null,
+      "unresolved_bases": 0
+    },
+    {
+      "bases": 250,
+      "bases_by_state": {
+        "callable_reference": 0,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 180,
+        "low_gq": 0,
+        "no_call": 50,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 20,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 0,
+      "callable_fraction": 0.0,
+      "contig": "demo",
+      "exon": "exon_3",
+      "gene": "EXAMPLE_A",
+      "intervals": [
+        [
+          400,
+          650
+        ]
+      ],
+      "main_reason": "low_depth",
+      "unresolved_bases": 250
+    },
+    {
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 149,
+        "callable_variant": 1,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 150,
+      "callable_fraction": 1.0,
+      "contig": "demo",
+      "exon": "exon_1",
+      "gene": "EXAMPLE_B",
+      "intervals": [
+        [
+          700,
+          850
+        ]
+      ],
+      "main_reason": null,
+      "unresolved_bases": 0
+    },
+    {
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 100,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 50,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 100,
+      "callable_fraction": 0.6666666666666666,
+      "contig": "demo",
+      "exon": "exon_2",
+      "gene": "EXAMPLE_B",
+      "intervals": [
+        [
+          800,
+          950
+        ]
+      ],
+      "main_reason": "no_record",
+      "unresolved_bases": 50
+    }
+  ],
+  "genes": [
+    {
+      "bases": 500,
+      "bases_by_state": {
+        "callable_reference": 250,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 180,
+        "low_gq": 0,
+        "no_call": 50,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 20,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 250,
+      "callable_fraction": 0.5,
+      "contig": "demo",
+      "gene": "EXAMPLE_A",
+      "intervals": [
+        [
+          0,
+          250
+        ],
+        [
+          400,
+          650
+        ]
+      ],
+      "main_reason": "low_depth",
+      "targeted_exons": 3,
+      "unresolved_bases": 250,
+      "unresolved_exons": 1
+    },
+    {
+      "bases": 250,
+      "bases_by_state": {
+        "callable_reference": 199,
+        "callable_variant": 1,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 50,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 200,
+      "callable_fraction": 0.8,
+      "contig": "demo",
+      "gene": "EXAMPLE_B",
+      "intervals": [
+        [
+          700,
+          950
+        ]
+      ],
+      "main_reason": "no_record",
+      "targeted_exons": 2,
+      "unresolved_bases": 50,
+      "unresolved_exons": 1
+    }
+  ],
   "header": {
     "caller": "deepvariant",
     "declared_contigs": 1,
@@ -63,10 +400,11 @@
     "unmapped_header_contigs": []
   },
   "inputs": {
-    "bed": {
-      "bytes": 97,
-      "modified_unix_seconds": 1790465439,
-      "path": "examples/targets.bed"
+    "bed": null,
+    "gene_targets": {
+      "bytes": 175,
+      "modified_unix_seconds": 1790522804,
+      "path": "examples/gene-targets.tsv"
     },
     "gvcf": {
       "bytes": 718,
@@ -87,14 +425,17 @@
   "options": {
     "allow_block_dp": false,
     "allow_unfiltered": false,
-    "bed": "examples/targets.bed",
+    "bed": null,
     "caller": "auto",
+    "gene_targets": "examples/gene-targets.tsv",
     "gvcf": "examples/sample.g.vcf",
+    "max_examples": 5,
     "max_reference_mismatch_bases": null,
+    "max_reference_mismatch_records": null,
     "min_callable_percent": null,
     "min_dp": 10.0,
     "min_gq": 20.0,
-    "out": "examples/report",
+    "out": "docs/demo/audit",
     "quiet": false,
     "reference": "examples/reference.fa",
     "sample": null
@@ -136,11 +477,16 @@
     "no_call": 1
   },
   "records_scanned": 5,
+  "reference_mismatches": {
+    "all_input_records": 0,
+    "primary_bases_in_scope": 0,
+    "records_overlapping_scope": 0
+  },
   "regions": [
     {
-      "bases": 400,
+      "bases": 150,
       "bases_by_state": {
-        "callable_reference": 400,
+        "callable_reference": 150,
         "callable_variant": 0,
         "complex_variant": 0,
         "filter_not_assessed": 0,
@@ -158,15 +504,47 @@
         "unsupported_allele": 0,
         "unsupported_ploidy": 0
       },
-      "callable_bases": 400,
+      "callable_bases": 150,
       "callable_fraction": 1.0,
       "contig": "demo",
-      "end": 400,
-      "name": "Passing region",
+      "end": 150,
+      "exon": "exon_1",
+      "gene": "EXAMPLE_A",
+      "name": "EXAMPLE_A/exon_1",
       "start": 0
     },
     {
-      "bases": 300,
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 150,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 0,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 150,
+      "callable_fraction": 1.0,
+      "contig": "demo",
+      "end": 250,
+      "exon": "exon_2",
+      "gene": "EXAMPLE_A",
+      "name": "EXAMPLE_A/exon_2",
+      "start": 100
+    },
+    {
+      "bases": 250,
       "bases_by_state": {
         "callable_reference": 0,
         "callable_variant": 0,
@@ -175,7 +553,7 @@
         "genotype_filtered": 0,
         "low_depth": 180,
         "low_gq": 0,
-        "no_call": 100,
+        "no_call": 50,
         "no_record": 0,
         "overlapping_records": 0,
         "partial_no_call": 0,
@@ -189,14 +567,16 @@
       "callable_bases": 0,
       "callable_fraction": 0.0,
       "contig": "demo",
-      "end": 700,
-      "name": "Low depth and missing calls",
+      "end": 650,
+      "exon": "exon_3",
+      "gene": "EXAMPLE_A",
+      "name": "EXAMPLE_A/exon_3",
       "start": 400
     },
     {
-      "bases": 300,
+      "bases": 150,
       "bases_by_state": {
-        "callable_reference": 199,
+        "callable_reference": 149,
         "callable_variant": 1,
         "complex_variant": 0,
         "filter_not_assessed": 0,
@@ -204,7 +584,7 @@
         "low_depth": 0,
         "low_gq": 0,
         "no_call": 0,
-        "no_record": 100,
+        "no_record": 0,
         "overlapping_records": 0,
         "partial_no_call": 0,
         "quality_missing": 0,
@@ -214,19 +594,50 @@
         "unsupported_allele": 0,
         "unsupported_ploidy": 0
       },
-      "callable_bases": 200,
+      "callable_bases": 150,
+      "callable_fraction": 1.0,
+      "contig": "demo",
+      "end": 850,
+      "exon": "exon_1",
+      "gene": "EXAMPLE_B",
+      "name": "EXAMPLE_B/exon_1",
+      "start": 700
+    },
+    {
+      "bases": 150,
+      "bases_by_state": {
+        "callable_reference": 100,
+        "callable_variant": 0,
+        "complex_variant": 0,
+        "filter_not_assessed": 0,
+        "genotype_filtered": 0,
+        "low_depth": 0,
+        "low_gq": 0,
+        "no_call": 0,
+        "no_record": 50,
+        "overlapping_records": 0,
+        "partial_no_call": 0,
+        "quality_missing": 0,
+        "reference_ambiguous": 0,
+        "reference_mismatch": 0,
+        "site_filtered": 0,
+        "unsupported_allele": 0,
+        "unsupported_ploidy": 0
+      },
+      "callable_bases": 100,
       "callable_fraction": 0.6666666666666666,
       "contig": "demo",
-      "end": 1000,
-      "name": "Variant and gap",
-      "start": 700
+      "end": 950,
+      "exon": "exon_2",
+      "gene": "EXAMPLE_B",
+      "name": "EXAMPLE_B/exon_2",
+      "start": 800
     }
   ],
-  "requested_bases": 1000,
+  "requested_bases": 750,
   "schema": "gvcf-audit-report-v1",
-  "scope": "Union of supplied BED intervals",
+  "scope": "Union of supplied gene/exon targets",
   "status": "complete",
-  "version": "0.2.0",
-  "warnings": [],
-  "example_note": "Synthetic demonstration. Input paths were shortened for sharing; measurements are unchanged."
+  "version": "0.4.0",
+  "warnings": []
 }
