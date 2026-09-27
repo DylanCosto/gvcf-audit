@@ -22,20 +22,28 @@ Use the reported coordinates to investigate the underlying reads in a genome vie
 
 ## Install and run
 
-Download the latest published Linux binary or source archive from the
-[releases page](https://github.com/DylanCosto/gvcf-audit/releases).
-A source checkout or unpacked source archive can be installed with:
+Download an archive for your system from the
+[releases page](https://github.com/DylanCosto/gvcf-audit/releases):
+
+| System | Archive |
+|---|---|
+| Linux x86-64 | `gvcf-audit-linux-x86_64-musl.tar.gz` |
+| macOS, Apple Silicon | `gvcf-audit-macos-arm64.tar.gz` |
+| macOS, Intel | `gvcf-audit-macos-x86_64.tar.gz` |
+
+Extract the archive and run `./gvcf-audit --version`, or move `gvcf-audit` to a directory
+on your `PATH`. These binaries need no Rust, Python, Java or caller installation.
+The Linux musl binary is statically linked and does not require a particular glibc version.
+`SHA256SUMS` on the release page lists the archive checksums.
+
+A source checkout or unpacked source archive can be installed with Rust 1.88 or later:
 
 ```sh
 cargo install --locked --path .
 gvcf-audit --version
 ```
 
-Alternatively, make the supplied Linux x86-64 binary executable and run it directly. It needs no Python,
-Java, or caller installation. The supplied binary requires glibc 2.34 or newer. On older Linux systems,
-build from source. Other platforms can build from source; only Linux has been validated here.
-
-Build with Rust 1.88 or later:
+To build and run from the source directory:
 
 ```sh
 cargo build --release --locked
@@ -65,6 +73,8 @@ checks run with `python3 tests/oracles/run.py target/debug/gvcf-audit` after
 `cargo build --locked`. They need no downloaded genomes or old release binaries.
 See [tests/README.md](tests/README.md) for coverage and expected-output provenance.
 GitHub Actions runs both suites, clippy, formatting and a Rust 1.88 release build.
+The binary workflow runs both suites on static Linux, Intel macOS and Apple Silicon macOS builds
+before attaching archives to a release.
 
 ## Audit options
 
@@ -328,7 +338,7 @@ reblocking.
 - Input contigs must be contiguous and positions nondecreasing; coordinate sorting is not performed.
 - The reference and input files must not be modified while the audit is running.
 - Reports contain sample identifiers, paths and genomic intervals. They remain local unless you share them.
-- Platform builds beyond the supplied Linux x86-64 binary have not been tested.
+- Linux x86-64 and both macOS architectures are tested in CI; other platforms are not yet tested.
 
 ## Source layout
 
