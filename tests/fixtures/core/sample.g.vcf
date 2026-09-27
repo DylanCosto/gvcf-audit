@@ -1,0 +1,15 @@
+##fileformat=VCFv4.2
+##GATKCommandLine=<ID=HaplotypeCaller,Version="4.6">
+##contig=<ID=chr1,length=40>
+##contig=<ID=chr2,length=10>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	S
+chr1	1	.	A	<NON_REF>	.	.	END=5	GT:MIN_DP:GQ	0/0:20:30
+chr1	6	.	A	<NON_REF>	.	.	END=10	GT:MIN_DP:GQ	0/0:2:30
+chr1	11	.	A	G	.	.	.	GT:DP:GQ	0/1:20:30
+chr1	12	.	A	G	.	PASS	.	GT:DP:GQ	0/1:20:30
+chr1	13	.	A	<NON_REF>	.	.	END=17	GT:MIN_DP:GQ	0/0:20:30
+chr1	16	.	A	<NON_REF>	.	.	END=18	GT:MIN_DP:GQ	0/0:20:30
+chr1	19	.	T	G	.	PASS	.	GT:DP:GQ	0/1:20:30
+chr1	20	.	A	<NON_REF>	.	.	END=20	GT:MIN_DP:GQ	./.:20:30
+chr1	21	.	N	<NON_REF>	.	.	END=21	GT:MIN_DP:GQ	0/0:20:30
+chr1	25	.	A	<NON_REF>	.	.	END=30	GT:DP:GQ	0/0:20:30

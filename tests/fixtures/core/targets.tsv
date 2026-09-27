@@ -1,0 +1,5 @@
+contig	start	end	gene	exon
+chr1	0	12	G	E1
+chr1	10	22	G	E2
+chr1	0	12	G	E1
+chr1	15	30	H	E3

@@ -1,0 +1,12 @@
+{
+  "requested_bases": 50,
+  "callable_bases": 10,
+  "bases_by_state": {
+    "callable_reference": 9, "callable_variant": 1, "no_record": 23,
+    "no_call": 1, "partial_no_call": 0, "site_filtered": 0,
+    "genotype_filtered": 0, "quality_missing": 6, "low_depth": 5,
+    "low_gq": 0, "unsupported_ploidy": 0, "unsupported_allele": 0,
+    "complex_variant": 0, "overlapping_records": 2, "reference_mismatch": 1,
+    "reference_ambiguous": 1, "filter_not_assessed": 1
+  }
+}
