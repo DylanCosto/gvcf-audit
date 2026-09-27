@@ -1,5 +1,12 @@
 # Changes
 
+## 0.4.0
+
+- Compare saved audits with exact callability gains/losses, state transitions and gene/exon summaries.
+- Check matching targets and flag intentional sample, reference-metadata and quality-rule differences.
+- Add changed intervals, comparison JSON/TSVs and an offline report without rescanning gVCFs.
+- Clarify what the audit measures and add browsable examples using fictional data.
+
 ## 0.3.0
 
 - Add bounded record and interval examples with observed values and exclusion rules.

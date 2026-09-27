@@ -1,9 +1,24 @@
 # gvcf-audit
 
-Explain where a sample has usable genotype evidence, and why other regions remain unresolved.
+When a gVCF reports no variant, does that mean the sample matches the reference, or that there
+wasn't enough evidence to tell?
 
-**Version 0.3.0.** A local command-line tool for auditing one selected sample using explicit depth,
-genotype-quality and filter rules. It has no imputation, variant calling or clinical interpretation.
+**gvcf-audit checks where a sample's gVCF has usable genotype evidence and explains the gaps.**
+It applies explicit depth, genotype-quality and filter rules across the whole reference or your chosen
+regions, with summaries for genes and exons when you supply their coordinates.
+
+For example, an exon with 200 bases might have 180 that meet your requirements, 15 with low depth,
+and 5 with no genotype evidence. The report identifies those 20 uncertain bases and their coordinates.
+It does not tell you whether they contain a missed variant. Even 100% callable does not prove every
+variant was detected correctly. The reference FASTA is used to check reference agreement; it is not
+an expected list of variants for the sample.
+
+[**Explore the example reports**](https://DylanCosto.github.io/gvcf-audit/) without installing anything.
+They use the small, fictional dataset included in this repository.
+
+**Version 0.4.0.** Runs locally, with offline HTML reports and BED, TSV and JSON exports.
+It does not call variants, inspect BAM reads, impute missing genotypes or provide clinical interpretation.
+Use the reported coordinates to investigate the underlying reads in a genome viewer such as IGV.
 
 ## Install and run
 
@@ -123,6 +138,57 @@ not randomly sampled, and only records overlapping the requested scope are retai
 spans may extend beyond the targets. They show primary record reasons plus missing MIN_DP, not every
 simultaneous failure. All records are still counted and checked when examples are disabled.
 
+## Compare two audits
+
+Compare saved audit directories without reading their original gVCFs or FASTAs again:
+
+```sh
+gvcf-audit compare --before old-audit --after new-audit --out comparison
+```
+
+Both directories must contain `report.json`, `callable.bed` and `unresolved.bed`. Complete reports from
+0.2.0 onward are supported. Gene/exon comparisons require both audits to have been generated with the
+same `--gene-targets` annotation. The output directory must be new.
+
+The comparison counts positions that **gained** or **lost** callability, as well as the net change.
+Ten gained bases and ten lost bases therefore remain visible even when the total is unchanged.
+Changes between two callable states are recorded but are not gains or losses of callability.
+The offline report includes searchable gene/exon tables and before/after reason totals.
+
+- `comparison.json`: overall, contig, gene/exon and state-transition counts, conditions and provenance.
+- `genes.tsv` and `exons.tsv`: before/after callability, gained/lost bases and net changes. Header-only
+  files are written when the input reports have no gene/exon summaries.
+- `changes.bed`: BED4 containing every changed primary state, named `before_state->after_state`.
+- `report.html`: offline comparison report; keep it with the downloads.
+
+The target union must match exactly. Group identifiers and each group's target union must also match;
+input-row order and repeated rows can differ. Target differences are refused rather than silently
+restricting the comparison to an intersection. Gene/exon totals can overlap and must not be summed.
+
+Sample names, recorded reference metadata and quality rules must agree by default. Intentional
+comparisons can use these explicit options, with the conditions retained in the report:
+
+- `--allow-policy-change`: compare different depth/GQ thresholds, filter settings or caller policies.
+  For example, add this flag when comparing audits made with `--min-gq 20` and `--min-gq 30`.
+- `--allow-different-samples`: compare different sample names. Differences cannot be attributed to a
+  pipeline change alone.
+- `--assume-same-reference`: assert that identical reference sequences were used when their recorded
+  paths, sizes or modification times differ, such as after relocating a FASTA.
+
+Matching reference metadata does **not** prove sequence identity. No reference checksums are available
+or computed, and the report says so. The reference override is an assertion, not a lift-over operation.
+These comparisons describe reported genotype evidence, not biological accuracy.
+
+The command validates both BED partitions and their global, contig and group counts against the reports.
+It reads audit BEDs once to index contig byte ranges and once to compare them, allowing different contig
+orders without keeping genome-wide intervals in memory. Memory still scales with report targets and
+groups. Keep the input audit directories unchanged while comparing them.
+
+Exit 0 means a valid comparison was written, even if callability fell or an input audit failed its
+quality gate. Such gate failures are shown as warnings. Invalid/incompatible input returns 1 and
+leaves no completed output directory. There is no automatic regression threshold in this version.
+See [the comparison format](docs/comparison-format.md) for field definitions.
+
 ## Pipeline use
 
 Set explicit quality limits when an automated workflow needs a pass/fail decision:
@@ -210,7 +276,7 @@ reblocking.
 
 ## Current limits
 
-- No indexed target-only reading, cohort aggregation, run-to-run comparison or automatic gene annotation.
+- No indexed target-only reading, cohort aggregation or automatic gene annotation.
   Gene/exon summaries require the explicit target file described above.
 - No BCF or compressed FASTA support in this version.
 - No automatic repair or normalization of the input.
