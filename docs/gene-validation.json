@@ -1,0 +1,50 @@
+{
+  "annotation": {
+    "annotation": "GENCODE v50 basic, reference chromosomes, GRCh38.p14",
+    "source": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.basic.annotation.gtf.gz",
+    "scope": "all chr22 exon rows; transcript repeats retained",
+    "coordinate_conversion": "GTF 1-based inclusive -> 0-based half-open: start minus one, end unchanged",
+    "group_ids": "versioned gene_id and exon_id; shared exon IDs merge within each gene",
+    "rows": 78148,
+    "distinct_rows": 15130,
+    "genes": 1747,
+    "gene_exon_pairs": 15130,
+    "transcripts": 8209,
+    "strand_rows": {
+      "-": 38354,
+      "+": 39794
+    },
+    "checksums_computed": false
+  },
+  "sample": "NA12878",
+  "caller": "gatk",
+  "full_input_records": 154179502,
+  "requested_bases": 3690789,
+  "callable_bases": 3554088,
+  "callable_percent": 96.29615781341063,
+  "genes": 1747,
+  "exons": 15130,
+  "all_target_rows_checked": 78148,
+  "all_exported_intervals_checked": 40036,
+  "all_gene_exon_totals_match_independent_sets": true,
+  "all_bed_states_match_previous_whole_genome_audit": true,
+  "all_tsv_state_counts_match_json": true,
+  "htslib_sampled_exons": 200,
+  "htslib_sampled_bases": 44804,
+  "htslib_sampled_states": {
+    "callable_reference": 42967,
+    "filter_not_assessed": 140,
+    "low_gq": 141,
+    "low_depth": 1556
+  },
+  "htslib_all_sampled_bases_match": true,
+  "seed": 220350,
+  "limits": "One public GATK sample, GENCODE v50 basic chr22 exons. Complete grouping/export comparison to the previous audit; independent genotype classification sampled, not every base. Transcript rows repeat exon IDs intentionally. No assertion of annotation completeness or clinical accuracy.",
+  "timing": {
+    "wall_seconds": 120.97,
+    "user_seconds": 118.72,
+    "system_seconds": 0.94,
+    "peak_rss_kib": 830252
+  },
+  "browser_checked": true
+}

@@ -475,6 +475,367 @@
     },
     "coordinates": {
       "type": "string"
+    },
+    "genes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contig",
+          "gene",
+          "intervals",
+          "bases",
+          "callable_bases",
+          "unresolved_bases",
+          "callable_fraction",
+          "main_reason",
+          "bases_by_state",
+          "targeted_exons",
+          "unresolved_exons"
+        ],
+        "properties": {
+          "contig": {
+            "type": "string"
+          },
+          "gene": {
+            "type": "string"
+          },
+          "intervals": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "bases": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "callable_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unresolved_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "callable_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "main_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "bases_by_state": {
+            "$ref": "#/properties/bases_by_state"
+          },
+          "targeted_exons": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unresolved_exons": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "exons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contig",
+          "gene",
+          "intervals",
+          "bases",
+          "callable_bases",
+          "unresolved_bases",
+          "callable_fraction",
+          "main_reason",
+          "bases_by_state",
+          "exon"
+        ],
+        "properties": {
+          "contig": {
+            "type": "string"
+          },
+          "gene": {
+            "type": "string"
+          },
+          "intervals": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "bases": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "callable_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unresolved_bases": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "callable_fraction": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "main_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "bases_by_state": {
+            "$ref": "#/properties/bases_by_state"
+          },
+          "exon": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reference_mismatches": {
+      "type": "object",
+      "required": [
+        "all_input_records",
+        "records_overlapping_scope",
+        "primary_bases_in_scope"
+      ],
+      "properties": {
+        "all_input_records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "records_overlapping_scope": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "primary_bases_in_scope": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "required": [
+        "max_examples_per_reason",
+        "reference_mismatch_records_overlapping_scope",
+        "record_examples",
+        "interval_examples"
+      ],
+      "properties": {
+        "max_examples_per_reason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reference_mismatch_records_overlapping_scope": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "record_examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "contig",
+              "input_contig",
+              "start",
+              "end",
+              "line",
+              "reason",
+              "rule",
+              "observed"
+            ],
+            "properties": {
+              "contig": {
+                "type": "string"
+              },
+              "input_contig": {
+                "type": "string"
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "reason": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              },
+              "observed": {
+                "type": "object",
+                "required": [
+                  "GT",
+                  "REF",
+                  "ALT",
+                  "FILTER",
+                  "FT",
+                  "DP",
+                  "MIN_DP",
+                  "GQ",
+                  "reference_block",
+                  "depth_field_used",
+                  "first_reference_mismatch"
+                ],
+                "properties": {
+                  "GT": {
+                    "type": "string"
+                  },
+                  "REF": {
+                    "type": "string"
+                  },
+                  "ALT": {
+                    "type": "string"
+                  },
+                  "FILTER": {
+                    "type": "string"
+                  },
+                  "FT": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "DP": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0
+                  },
+                  "MIN_DP": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0
+                  },
+                  "GQ": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0
+                  },
+                  "reference_block": {
+                    "type": "boolean"
+                  },
+                  "depth_field_used": {
+                    "enum": [
+                      "DP",
+                      "MIN_DP"
+                    ]
+                  },
+                  "first_reference_mismatch": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "position",
+                          "vcf_base",
+                          "reference_base"
+                        ],
+                        "properties": {
+                          "position": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "vcf_base": {
+                            "type": "string"
+                          },
+                          "reference_base": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "interval_examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "contig",
+              "start",
+              "end",
+              "reason"
+            ],
+            "properties": {
+              "contig": {
+                "type": "string"
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "additionalProperties": true

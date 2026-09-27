@@ -39,3 +39,36 @@ separate files, so keep the output directory together when sharing it.
 `header.reblocked` records whether a ReblockGVCF command header was detected.
 `adaptations.reference_blocks_missing_MIN_DP` counts reference blocks missing MIN_DP, including
 blocks excluded for another reason. The warning does not enable DP fallback automatically.
+
+## Additions in 0.3.0
+
+`reference_mismatches` reports `all_input_records`, `records_overlapping_scope`, and
+`primary_bases_in_scope`. The new record gate uses the middle count; the existing base gate uses the
+last. Record overlap is based on the entire record span, not just the position of the differing REF
+base. All counts remain available when examples are disabled.
+
+`diagnostics.record_examples` stores bounded examples before overlap/reference masking. The reason
+`reference_blocks_missing_MIN_DP` is an additional observation and can accompany another record reason.
+Fields under `observed` contain the selected sample's values; numeric nulls mean missing. String values
+are shortened to 80 characters with an ellipsis when truncated. `first_reference_mismatch.position`
+is 0-based and is found using the full REF allele. `line` is the 1-based line number in the decompressed
+VCF. Record examples must overlap the requested scope but retain their full span.
+
+`diagnostics.interval_examples` contains bounded final unresolved intervals within the scope. These
+can differ from a record's reason because overlap and ambiguous reference take precedence. The first
+examples encountered are retained, with adjacent pieces of a retained interval merged. They are not
+an unbiased sample. The limit applies separately to each record/interval reason.
+
+`genes` and `exons` are empty unless `--gene-targets` is supplied. Group identity is contig + gene for
+genes and contig + gene + exon for exons. Counts cover the union of that group's intervals. The JSON
+`intervals` array contains the actual merged targets; gaps between them are not counted. Gene counts
+are calculated from the union, never by adding overlapping exon counts. `targeted_exons` counts unique
+exon identifiers, and `unresolved_exons` counts those with any unresolved base. `main_reason` is the
+unresolved state with the most bases (null if all bases are callable); ties follow the state order in
+`STATES` in the source. All state counts are retained so ties need not be inferred from the main reason.
+Groups are ordered by reference contig, gene identifier and exon identifier. The HTML initially sorts
+by lowest callability. `regions` still reports input rows independently, now with `gene` and `exon`
+fields for annotated input; `regions.tsv` keeps its existing columns.
+
+These fields are optional in the v1 schema so older reports remain valid. Quality rules and existing
+BED/TSV outputs for unchanged inputs and options retain their previous meanings.

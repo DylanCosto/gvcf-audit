@@ -1,4 +1,57 @@
-# Validation for 0.2.0
+# Validation for 0.3.0
+
+The new diagnostics and gene/exon summaries were checked on Linux x86-64. No changes to the
+callability policy were intended. The previous callability policy is retained.
+
+- All 79 previous controlled checks, 25 release checks and three reblocking checks passed again.
+- 61 new checks passed, including 45 randomized gene/exon union comparisons. These cover repeated
+  and overlapping targets, shared gene coordinates, scope boundaries, malformed targets, bounded
+  examples, reference mismatch details, HTML escaping and the separate mismatch-record limit.
+- An additional overlapping-record example confirmed that the record limit still fails when the
+  final interval is classified as an overlap instead of a reference mismatch.
+- 60 JSON reports validated against the expanded schema, including a saved 0.2.0 report.
+- Gene/exon search, sorting, pagination and empty results were exercised in Chrome with up to
+  125 groups. These checks do not establish compatibility with every browser.
+
+The complete reblocked NA12878 input described below was scanned again: 42,025,432 records across
+3,217,346,917 requested bases. Both BED outputs and regions.tsv match the saved 0.2.0 outputs byte
+for byte. Global, contig and record classifications are unchanged. The report now distinguishes
+84 mismatching records in scope from zero primary mismatch bases; the separate record limit correctly
+returned exit status 2 while retaining the completed report.
+
+That run took 34.15 seconds (33.61 user and 0.51 system CPU seconds), with peak RSS of 253,536 KiB.
+This is one local run, not evidence of a speedup. Checksums were not computed. The whole-genome comparison used the existing BED scope.
+
+Gene/exon totals describe only supplied intervals. They do not establish completeness of an annotation
+or assess unlisted exons. Validation scripts remain outside the source repository.
+
+## Real gene/exon annotations
+
+[GENCODE v50 basic chromosome annotations](https://www.gencodegenes.org/human/release_50.html)
+were used to select every chr22 exon row. GTF starts were reduced by one to produce 0-based half-open
+coordinates; ends were unchanged. Versioned gene_id and exon_id values supplied the group identifiers.
+Transcript repeats were intentionally retained: 78,148 input rows describe 15,130 distinct gene/exon
+pairs across 1,747 genes and 8,209 transcripts, on both strands. This is the basic annotation subset,
+not every annotated transcript or an assertion that all possible exons are covered.
+
+The complete public NA12878 HaplotypeCaller input was scanned (154,179,502 records), using its matching
+Broad hg38 reference and the default policy. Of 3,690,789 distinct requested bases, 3,554,088 were
+callable (96.2962%). Every input row, gene, exon, TSV state count and all 40,036 exported BED intervals
+agreed with an independent calculation using sets of base positions and the saved 0.2.0 whole-genome
+classifications. Repeated transcript rows did not inflate group totals. A separate pysam/HTSlib parser
+also agreed at all 44,804 sampled bases across 200 exons. Independent classification was sampled,
+not repeated at every requested base.
+
+The run took 120.97 seconds, with 118.72 user and 0.94 system CPU seconds and 830,252 KiB peak RSS.
+The many retained rows produced a 77 MiB JSON report and a 15 MiB HTML report. Memory and report size
+scale with target rows and group counts; the smaller earlier BED audits are not a memory estimate for
+large annotation sets. Search worked in Chrome on the real 1,747-gene/15,130-exon report without logged
+JavaScript errors. This evidence covers one caller/sample and annotation release. Machine-readable
+results and the annotation source URL are in [gene-validation.json](gene-validation.json).
+
+The earlier release evidence and its limits follow.
+
+## Validation for 0.2.0
 
 This release was validated on Linux x86-64. These checks establish behavior under the documented policy;
 they do not establish the biological accuracy of an input caller or clinical suitability.
